@@ -1,0 +1,12 @@
+packages:
+  - admin
+  - app
+  - homepage
+  - packages/*
+  - web
+allowBuilds:
+  dooboolab-welcome: false
+  esbuild: true
+  return-fetch: true
+  sharp: true
+  unrs-resolver: true

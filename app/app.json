@@ -1,0 +1,84 @@
+{
+  "expo": {
+    "name": "Blending",
+    "slug": "blending-app",
+    "scheme": "blending",
+    "version": "1.0.2",
+    "orientation": "portrait",
+    "icon": "./assets/icon.png",
+    "userInterfaceStyle": "light",
+    "ios": {
+      "supportsTablet": true,
+      "usesAppleSignIn": true,
+      "entitlements": {
+        "aps-environment": "production"
+      },
+      "infoPlist": {
+        "CFBundleDevelopmentRegion": "ko",
+        "CFBundleLocalizations": ["ko"],
+        "ITSAppUsesNonExemptEncryption": false,
+        "LSApplicationQueriesSchemes": ["nmap"],
+        "NSCameraUsageDescription": "Blending에서 프로필과 콘텐츠에 사용할 이미지를 촬영하기 위해 카메라 접근이 필요합니다.",
+        "NSLocationWhenInUseUsageDescription": "Blending에서 내 주변 바리스타를 찾기 위해 현재 위치 접근이 필요합니다.",
+        "NSUserNotificationsUsageDescription": "Blending의 알림을 받기 위해 알림 권한이 필요합니다."
+      },
+      "bundleIdentifier": "com.blending.app"
+    },
+    "android": {
+      "adaptiveIcon": {
+        "backgroundColor": "#FFFFFF",
+        "foregroundImage": "./assets/android-icon-foreground.png",
+        "backgroundImage": "./assets/android-icon-background.png"
+      },
+      "permissions": [
+        "android.permission.CAMERA",
+        "android.permission.ACCESS_COARSE_LOCATION",
+        "android.permission.ACCESS_FINE_LOCATION",
+        "android.permission.POST_NOTIFICATIONS"
+      ],
+      "predictiveBackGestureEnabled": false,
+      "googleServicesFile": "./google-services.json",
+      "package": "com.blending.app"
+    },
+    "web": {
+      "favicon": "./assets/favicon.png"
+    },
+    "plugins": [
+      [
+        "expo-splash-screen",
+        {
+          "backgroundColor": "#FFFFFF"
+        }
+      ],
+      [
+        "expo-image-picker",
+        {
+          "cameraPermission": "Blending에서 프로필과 콘텐츠에 사용할 이미지를 촬영하기 위해 카메라 접근이 필요합니다.",
+          "microphonePermission": false,
+          "photosPermission": "Blending에서 이미지를 선택하기 위해 이미지 보관함 접근이 필요합니다."
+        }
+      ],
+      "expo-secure-store",
+      [
+        "expo-location",
+        {
+          "locationWhenInUsePermission": "Blending에서 내 주변 바리스타를 찾기 위해 현재 위치 접근이 필요합니다."
+        }
+      ],
+      [
+        "expo-notifications",
+        {
+          "icon": "./assets/android-icon-monochrome.png",
+          "color": "#000000"
+        }
+      ],
+      "expo-apple-authentication"
+    ],
+    "extra": {
+      "eas": {
+        "projectId": "5bc14613-c73a-4cea-8217-c48b165bafb5"
+      }
+    },
+    "owner": "blending-88"
+  }
+}

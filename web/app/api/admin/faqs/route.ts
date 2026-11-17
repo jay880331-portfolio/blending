@@ -1,0 +1,8 @@
+import type { NextRequest } from "next/server";
+import {
+  createGuideContentRoute,
+  listGuideContent,
+} from "@/infrastructure/server/adminGuideContentRoutes";
+export const GET = (request: NextRequest) => listGuideContent(request, "faq");
+export const POST = (request: NextRequest) =>
+  createGuideContentRoute(request, "faq");

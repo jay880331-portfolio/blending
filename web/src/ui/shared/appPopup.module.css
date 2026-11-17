@@ -1,0 +1,111 @@
+.dialog {
+  inline-size: min(100%, var(--app-shell-max-width));
+  max-inline-size: var(--app-shell-max-width);
+  max-block-size: calc(100dvh - env(safe-area-inset-top));
+  margin: auto auto 0;
+  padding: 0;
+  border: 0;
+  border-radius: var(--radius-xl) var(--radius-xl) 0 0;
+  background: var(--surface);
+  box-shadow: var(--shadow-modal);
+  color: var(--fg);
+  font-family: var(--font-body);
+}
+
+.dialog::backdrop {
+  background: color-mix(in srgb, var(--fg) 40%, transparent);
+}
+
+.carousel {
+  display: flex;
+  overflow-x: auto;
+  scroll-snap-type: x mandatory;
+}
+
+.slide {
+  flex: 0 0 100%;
+  scroll-snap-align: start;
+}
+
+.mediaFrame {
+  position: relative;
+  display: flex;
+  aspect-ratio: 4 / 3;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  background: var(--surface-alt);
+}
+
+.mediaLink {
+  display: flex;
+  block-size: 100%;
+  inline-size: 100%;
+  align-items: center;
+  justify-content: center;
+}
+
+.mediaFrame img {
+  display: block;
+  block-size: 100%;
+  inline-size: 100%;
+  object-fit: cover;
+  opacity: 0;
+  transition: opacity 150ms ease-out;
+}
+
+.mediaFrame .imageReady {
+  opacity: 1;
+}
+
+.skeleton {
+  position: absolute;
+  margin: 0;
+  color: var(--fg-muted);
+  font-size: 14px;
+}
+
+.counter {
+  margin: 0;
+  padding: 8px 16px;
+  color: var(--fg-muted);
+  font-size: 12px;
+  text-align: center;
+}
+
+.actions {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  padding-block-end: var(--app-safe-area-bottom);
+  border-top: 1px solid var(--border);
+}
+
+.actions button {
+  min-block-size: 48px;
+  border: 0;
+  background: var(--surface);
+  color: var(--fg);
+  font: inherit;
+  font-size: 14px;
+  font-weight: 700;
+}
+
+.actions button + button {
+  border-inline-start: 1px solid var(--border);
+}
+
+.actions button:disabled {
+  cursor: not-allowed;
+  opacity: 0.4;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .carousel {
+    scroll-behavior: auto;
+    transition-duration: 50ms;
+  }
+
+  .mediaFrame img {
+    transition-duration: 50ms;
+  }
+}

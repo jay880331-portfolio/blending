@@ -1,0 +1,88 @@
+.page,
+.formPage {
+  display: grid;
+  gap: 24px;
+  min-width: 0;
+}
+
+.formPage {
+  max-width: 880px;
+}
+
+.page :global(.page-header),
+.formPage :global(.page-header) {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 24px;
+}
+
+.form {
+  display: grid;
+  gap: 24px;
+}
+
+.help {
+  margin: 0;
+  color: var(--fg-muted);
+  font-size: 13px;
+  line-height: 1.5;
+}
+
+.pill {
+  display: inline-block;
+  max-width: 160px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  border-radius: var(--radius-pill);
+  background: var(--accent);
+  color: #fff;
+  padding: 2px 8px;
+  font-size: 12px;
+  font-weight: 700;
+  line-height: 1.2;
+}
+
+.avatarPreview {
+  position: relative;
+  width: 112px;
+  height: 120px;
+}
+
+.avatar {
+  display: block;
+  width: 112px;
+  height: 112px;
+  border: 2px solid var(--accent);
+  border-radius: var(--radius-pill);
+  background: var(--surface-alt);
+}
+
+.avatarPreview .pill {
+  position: absolute;
+  bottom: 8px;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+.assigned {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px;
+  margin: 0 0 16px;
+  padding: 0;
+  list-style: none;
+}
+
+.assigned button {
+  margin-inline-start: 8px;
+}
+
+.rowActions {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+  gap: 8px;
+}

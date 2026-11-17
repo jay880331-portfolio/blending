@@ -1,0 +1,329 @@
+.page,
+.formPage {
+  display: grid;
+  gap: 24px;
+  min-width: 0;
+}
+
+.formPage {
+  max-width: 880px;
+}
+
+.page .pageHeader,
+.formPage .pageHeader {
+  display: flex;
+  height: auto;
+  min-height: 64px;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 24px;
+  border: 0;
+  padding: 0;
+}
+
+.pageHeader h1 {
+  margin: 4px 0 0;
+  font-size: 24px;
+  line-height: 1.25;
+}
+
+.pageHeader p {
+  margin: 8px 0 0;
+  color: var(--fg-muted);
+}
+
+.pageHeader a:not(.primaryAction) {
+  display: inline-flex;
+  min-height: 42px;
+  align-items: center;
+  border: 1px solid var(--border-strong);
+  border-radius: var(--radius-md);
+  background: var(--surface);
+  color: var(--fg);
+  padding: 10px 16px;
+  font-weight: 700;
+}
+
+.primaryAction,
+.primaryButton {
+  border: 0;
+  border-radius: var(--radius-lg);
+  background: var(--accent);
+  color: var(--surface);
+  cursor: pointer;
+  font-weight: 700;
+  padding: 12px 20px;
+}
+
+.primaryButton {
+  min-height: 56px;
+}
+
+.primaryButton:disabled {
+  cursor: not-allowed;
+  opacity: 0.4;
+}
+
+.kindNav {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px 24px;
+  border-bottom: 1px solid var(--border-strong);
+}
+
+.kindNav a {
+  color: var(--fg-muted);
+  padding: 12px 0;
+}
+
+.kindNav a[aria-current="page"] {
+  color: var(--accent);
+  font-weight: 700;
+}
+
+.page :global(.list-filter) {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  align-items: center;
+  padding: 16px;
+  background: var(--surface-alt);
+}
+
+.page :global(.list-filter) input,
+.page :global(.list-filter) select,
+.page :global(.list-filter) button,
+.contentForm input,
+.contentForm select,
+.contentForm textarea,
+.page dialog input,
+.page dialog textarea {
+  border: 1px solid var(--border-strong);
+  border-radius: var(--radius-md);
+  background: var(--surface);
+  color: var(--fg);
+  padding: 10px 12px;
+}
+
+.page :global(.list-filter) button,
+.actions button,
+.pager button {
+  cursor: pointer;
+}
+
+.page :global(table) {
+  width: 100%;
+  border-collapse: collapse;
+  background: var(--surface);
+}
+
+.page :global(caption) {
+  overflow: hidden;
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  clip: rect(0 0 0 0);
+}
+
+.page :global(th),
+.page :global(td) {
+  border-bottom: 1px solid var(--border);
+  padding: 14px 12px;
+  text-align: left;
+  vertical-align: top;
+}
+
+.page :global(th) {
+  color: var(--fg-muted);
+  font-size: 13px;
+  font-weight: 700;
+}
+
+.page :global(th button) {
+  border: 0;
+  background: transparent;
+  color: inherit;
+  cursor: pointer;
+  font-weight: inherit;
+  padding: 0;
+}
+
+.page :global([data-status]) {
+  display: inline-block;
+  border-radius: var(--radius-pill);
+  background: var(--surface-alt);
+  padding: 3px 10px;
+  font-size: 12px;
+  font-weight: 600;
+}
+
+.page :global(nav[aria-label="페이지"] ol) {
+  display: flex;
+  justify-content: center;
+  gap: 12px;
+  list-style: none;
+  padding: 16px 0 0;
+}
+
+.page :global(nav[aria-label="페이지"] [aria-current="page"]) {
+  color: var(--accent);
+  font-weight: 700;
+}
+
+.statusLine,
+.actions,
+.pager {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.statusLine {
+  margin-top: 12px;
+  color: var(--fg-muted);
+}
+
+.actions {
+  flex-wrap: wrap;
+  justify-content: flex-end;
+}
+
+.actions a,
+.actions button,
+.pager button {
+  border: 1px solid var(--border-strong);
+  border-radius: var(--radius-md);
+  background: var(--surface);
+  color: var(--fg);
+  padding: 8px 12px;
+}
+
+.detailSection {
+  display: grid;
+  gap: 16px;
+  padding-top: 8px;
+}
+
+.detailSection h2 {
+  margin: 0;
+  border-bottom: 1px solid var(--border-strong);
+  padding-bottom: 12px;
+  font-size: 18px;
+}
+
+.details {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 1px;
+  margin: 0;
+  background: var(--border);
+}
+
+.details > div {
+  min-width: 0;
+  background: var(--surface);
+  padding: 12px;
+}
+
+.details dt {
+  color: var(--fg-muted);
+  font-size: 12px;
+  font-weight: 700;
+}
+
+.details dd {
+  margin: 6px 0 0;
+  overflow-wrap: anywhere;
+}
+
+.preserve {
+  white-space: pre-wrap;
+}
+
+.empty {
+  margin: 0;
+  color: var(--fg-muted);
+  padding: 24px 0;
+  text-align: center;
+}
+
+.pager {
+  justify-content: center;
+}
+
+.pager button:disabled {
+  cursor: not-allowed;
+  opacity: 0.4;
+}
+
+.contentForm {
+  display: grid;
+  gap: 24px;
+}
+
+.contentForm fieldset {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 20px;
+  margin: 0;
+  border: 1px solid var(--border);
+  padding: 20px;
+}
+
+.contentForm legend {
+  padding: 0 8px;
+  font-size: 18px;
+  font-weight: 700;
+}
+
+.contentForm label,
+.page dialog label {
+  display: grid;
+  gap: 8px;
+  color: var(--fg-muted);
+  font-size: 13px;
+  font-weight: 700;
+}
+
+.contentForm textarea,
+.page dialog textarea {
+  min-height: 120px;
+  resize: vertical;
+}
+
+.contentForm label:has(textarea) {
+  grid-column: 1 / -1;
+}
+
+.page dialog {
+  width: min(480px, calc(100vw - 48px));
+  border: 1px solid var(--border-strong);
+  border-radius: var(--radius-xl);
+  background: var(--surface);
+  color: var(--fg);
+  padding: 24px;
+}
+
+.page dialog::backdrop {
+  background: color-mix(in srgb, var(--fg) 40%, transparent);
+}
+
+.page dialog button {
+  margin-top: 16px;
+  margin-right: 8px;
+  border: 1px solid var(--border-strong);
+  border-radius: var(--radius-md);
+  background: var(--surface);
+  padding: 10px 16px;
+}
+
+@media (max-width: 900px) {
+  .details,
+  .contentForm fieldset {
+    grid-template-columns: 1fr;
+  }
+
+  .contentForm label:has(textarea) {
+    grid-column: auto;
+  }
+}

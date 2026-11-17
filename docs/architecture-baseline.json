@@ -1,0 +1,131 @@
+{
+  "version": 1,
+  "description": "Architecture boundary violation baseline. Do not manually edit without rationale.",
+  "violations": [
+    {
+      "source": "web/src/application/admin/adminUnitOfWork.ts",
+      "target": "mongodb",
+      "rule": "application-no-framework"
+    },
+    {
+      "source": "web/src/application/admin/adminUnitOfWork.ts",
+      "target": "web/src/infrastructure/mongodb/client.ts",
+      "rule": "application-no-infrastructure"
+    },
+    {
+      "source": "web/src/application/admin/appPopupUseCases.ts",
+      "target": "mongodb",
+      "rule": "application-no-framework"
+    },
+    {
+      "source": "web/src/application/admin/appSettingsUseCases.test.ts",
+      "target": "mongodb",
+      "rule": "application-no-framework"
+    },
+    {
+      "source": "web/src/application/admin/appSettingsUseCases.test.ts",
+      "target": "web/src/infrastructure/mongodb/adminSettingsMongoRepository.ts",
+      "rule": "application-no-infrastructure"
+    },
+    {
+      "source": "web/src/application/admin/auditedMutation.test.ts",
+      "target": "mongodb",
+      "rule": "application-no-framework"
+    },
+    {
+      "source": "web/src/application/admin/auditedMutation.ts",
+      "target": "mongodb",
+      "rule": "application-no-framework"
+    },
+    {
+      "source": "web/src/application/admin/contentErrors.ts",
+      "target": "next/server",
+      "rule": "application-no-framework"
+    },
+    {
+      "source": "web/src/application/admin/contentErrors.ts",
+      "target": "web/src/infrastructure/mongodb/adminContentMongoRepository.ts",
+      "rule": "application-no-infrastructure"
+    },
+    {
+      "source": "web/src/application/admin/contentErrors.ts",
+      "target": "web/src/infrastructure/server/adminHttp.ts",
+      "rule": "application-no-infrastructure"
+    },
+    {
+      "source": "web/src/application/admin/contentErrors.ts",
+      "target": "web/src/infrastructure/server/adminRequest.ts",
+      "rule": "application-no-infrastructure"
+    },
+    {
+      "source": "web/src/application/admin/contentUseCases.ts",
+      "target": "mongodb",
+      "rule": "application-no-framework"
+    },
+    {
+      "source": "web/src/application/admin/eventRequestUseCases.test.ts",
+      "target": "mongodb",
+      "rule": "application-no-framework"
+    },
+    {
+      "source": "web/src/application/admin/eventRequestUseCases.ts",
+      "target": "mongodb",
+      "rule": "application-no-framework"
+    },
+    {
+      "source": "web/src/application/admin/guideContentUseCases.test.ts",
+      "target": "mongodb",
+      "rule": "application-no-framework"
+    },
+    {
+      "source": "web/src/application/admin/guideContentUseCases.ts",
+      "target": "mongodb",
+      "rule": "application-no-framework"
+    },
+    {
+      "source": "web/src/application/admin/moderationUseCases.test.ts",
+      "target": "mongodb",
+      "rule": "application-no-framework"
+    },
+    {
+      "source": "web/src/application/admin/moderationUseCases.ts",
+      "target": "mongodb",
+      "rule": "application-no-framework"
+    },
+    {
+      "source": "web/src/application/admin/profileBadgeUseCases.ts",
+      "target": "mongodb",
+      "rule": "application-no-framework"
+    },
+    {
+      "source": "web/src/application/admin/searchIndexUseCases.ts",
+      "target": "web/src/infrastructure/mongodb/searchIndexOperationsRepository.ts",
+      "rule": "application-no-infrastructure"
+    },
+    {
+      "source": "web/src/application/admin/userUseCases.test.ts",
+      "target": "mongodb",
+      "rule": "application-no-framework"
+    },
+    {
+      "source": "web/src/application/admin/userUseCases.ts",
+      "target": "mongodb",
+      "rule": "application-no-framework"
+    },
+    {
+      "source": "web/src/application/admin/userUseCases.ts",
+      "target": "web/src/infrastructure/server/accountStatus.ts",
+      "rule": "application-no-infrastructure"
+    },
+    {
+      "source": "web/src/application/community/userBlockUseCases.ts",
+      "target": "mongodb",
+      "rule": "application-no-framework"
+    },
+    {
+      "source": "web/src/application/member/accountDeletionJobs.ts",
+      "target": "mongodb",
+      "rule": "application-no-framework"
+    }
+  ]
+}

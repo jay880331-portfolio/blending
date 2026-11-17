@@ -1,0 +1,44 @@
+name: Admin staging smoke
+
+on:
+  workflow_dispatch:
+  deployment_status:
+
+concurrency:
+  group: admin-staging-smoke
+  cancel-in-progress: false
+
+jobs:
+  smoke:
+    if: github.event_name == 'workflow_dispatch' || (github.event.deployment_status.state == 'success' && github.event.deployment.environment == 'staging')
+    runs-on: ubuntu-latest
+    environment: staging
+    env:
+      ADMIN_SMOKE_BASE_URL: ${{ secrets.ADMIN_SMOKE_BASE_URL }}
+      ADMIN_SMOKE_LOGIN_ID: ${{ secrets.ADMIN_SMOKE_LOGIN_ID }}
+      ADMIN_SMOKE_PASSWORD: ${{ secrets.ADMIN_SMOKE_PASSWORD }}
+      ADMIN_SMOKE_ENABLED: "true"
+      MONGODB_URI: ${{ secrets.MONGODB_URI }}
+      MONGODB_DB: ${{ secrets.MONGODB_DB }}
+    steps:
+      - uses: actions/checkout@v4
+      - name: Validate smoke environment
+        run: |
+          test -n "$ADMIN_SMOKE_BASE_URL"
+          test -n "$ADMIN_SMOKE_LOGIN_ID"
+          test -n "$ADMIN_SMOKE_PASSWORD"
+          test -n "$MONGODB_URI"
+          test -n "$MONGODB_DB"
+      - uses: pnpm/action-setup@v4
+        with:
+          version: 9.15.9
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: pnpm
+      - run: pnpm install --frozen-lockfile
+      - run: pnpm --filter @blending/admin exec playwright install --with-deps chromium
+      - run: pnpm --filter @blending/web admin:smoke-fixture -- --create
+      - run: pnpm --filter @blending/admin test:e2e
+      - if: always()
+        run: pnpm --filter @blending/web admin:smoke-fixture -- --remove

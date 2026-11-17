@@ -1,0 +1,1456 @@
+<!doctype html>
+<html lang="ko" data-theme="light">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+<title>BLENDING — Design System</title>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,300,0,0&display=swap" rel="stylesheet" />
+<style>
+  /* ---- Fonts ---- */
+  @font-face {
+    font-family: 'Galmuri11';
+    src: url('../web/public/fonts/Galmuri11.woff2') format('woff2'),
+         url('../web/public/fonts/Galmuri11.ttf') format('truetype');
+    font-weight: 400;
+    font-style: normal;
+    font-display: swap;
+  }
+  @font-face {
+    font-family: 'Galmuri11';
+    src: url('../web/public/fonts/Galmuri11-Bold.woff2') format('woff2'),
+         url('../web/public/fonts/Galmuri11-Bold.ttf') format('truetype');
+    font-weight: 700;
+    font-style: normal;
+    font-display: swap;
+  }
+  @font-face { font-family: 'SeoulNamsan'; src: url('../web/public/fonts/SeoulNamsanL.ttf') format('truetype');  font-weight: 300; font-display: swap; }
+  @font-face { font-family: 'SeoulNamsan'; src: url('../web/public/fonts/SeoulNamsanM.ttf') format('truetype');  font-weight: 500; font-display: swap; }
+  @font-face { font-family: 'SeoulNamsan'; src: url('../web/public/fonts/SeoulNamsanB.ttf') format('truetype');  font-weight: 700; font-display: swap; }
+  @font-face { font-family: 'SeoulNamsan'; src: url('../web/public/fonts/SeoulNamsanEB.ttf') format('truetype'); font-weight: 800; font-display: swap; }
+
+  /* ---- Tokens (Light) ---- */
+  :root {
+    --bg: #FFFFFF;
+    --surface: #FFFFFF;
+    --surface-alt: #FAFAFA;
+    --surface-high: #FFFFFF;
+    --fg: #000000;
+    --fg-strong: #000000;
+    --fg-muted: #6B7280;
+    --fg-subtle: #9CA3AF;
+    --fg-faint: #D1D5DB;
+    --border: #F3F4F6;
+    --border-strong: #E5E7EB;
+    --border-dashed: #D1D5DB;
+    --accent: #FF0000;
+    --accent-hover: #E10000;
+    --accent-soft: rgba(255, 0, 0, 0.20);
+
+    --hl-yellow: rgba(250, 204, 21, 0.30);
+    --hl-blue:   rgba(96, 165, 250, 0.30);
+    --hl-green:  rgba(52, 211, 153, 0.30);
+    --hl-red:    rgba(255, 0, 0, 0.20);
+
+    --dot-yellow: #FFD700;
+    --dot-blue:   #4A90E2;
+    --dot-green:  #50E3C2;
+
+    --success: #17A34A;
+    --warn: #EAB308;
+    --danger: #DC2626;
+    --info: #4A90E2;
+
+    --font-logo: 'Galmuri11', 'Courier New', monospace;
+    --font-body: 'SeoulNamsan', -apple-system, BlinkMacSystemFont, system-ui, sans-serif;
+
+    --shadow-card: 0 2px 8px rgba(0, 0, 0, 0.04);
+    --shadow-modal: 0 8px 32px rgba(0, 0, 0, 0.12);
+    --shadow-nav: 0 -4px 20px rgba(0, 0, 0, 0.02);
+
+    --radius-sm: 2px;
+    --radius-md: 4px;
+    --radius-lg: 8px;
+    --radius-xl: 12px;
+    --radius-pill: 9999px;
+  }
+
+  /* ---- Base ---- */
+  * { box-sizing: border-box; }
+  html, body { margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+  body {
+    background: var(--bg);
+    color: var(--fg);
+    font-family: var(--font-body);
+    font-weight: 400;
+    line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    transition: background-color 0.2s ease-out, color 0.2s ease-out;
+  }
+  .material-symbols-outlined {
+    font-variation-settings: 'FILL' 0, 'wght' 300, 'GRAD' 0, 'opsz' 24;
+    user-select: none;
+  }
+  .material-symbols-outlined.filled {
+    font-variation-settings: 'FILL' 1, 'wght' 300, 'GRAD' 0, 'opsz' 24;
+  }
+
+  /* ---- Layout ---- */
+  .page { display: grid; grid-template-columns: 240px 1fr; min-height: 100vh; }
+  @media (max-width: 900px) { .page { grid-template-columns: 1fr; } .sidebar { display: none; } }
+
+  .sidebar {
+    position: sticky; top: 0; height: 100vh;
+    border-inline-end: 1px solid var(--border);
+    background: var(--surface);
+    padding: 24px 0;
+    overflow-y: auto;
+  }
+  .sidebar-brand {
+    font-family: var(--font-logo);
+    font-size: 22px;
+    font-weight: 700;
+    letter-spacing: 0;
+    color: var(--fg-strong);
+    padding: 0 24px 24px;
+    text-transform: uppercase;
+    border-bottom: 1px solid var(--border);
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .sidebar-brand-tag {
+    font-family: var(--font-body);
+    font-size: 9px;
+    font-weight: 700;
+    letter-spacing: 0.16em;
+    color: var(--fg-subtle);
+    padding: 2px 6px;
+    border: 1px solid var(--border-strong);
+    border-radius: var(--radius-sm);
+  }
+  .sidebar-nav { padding: 16px 0; }
+  .sidebar-nav a {
+    display: block;
+    padding: 10px 24px;
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--fg-muted);
+    text-decoration: none;
+    border-inline-start: 3px solid transparent;
+    transition: color 0.15s ease-out, border-color 0.15s ease-out;
+  }
+  .sidebar-nav a:hover { color: var(--fg-strong); }
+  .sidebar-nav a.active {
+    color: var(--fg-strong);
+    font-weight: 700;
+    border-inline-start-color: var(--accent);
+  }
+  .sidebar-section-title {
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 0.16em;
+    color: var(--fg-subtle);
+    text-transform: uppercase;
+    padding: 16px 24px 8px;
+  }
+
+  .main { padding: 0; }
+
+  /* ---- TopAppBar ---- */
+  .topbar {
+    position: sticky; top: 0; z-index: 20;
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 16px 32px;
+    background: color-mix(in srgb, var(--surface) 92%, transparent);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border-bottom: 1px solid var(--border);
+  }
+  .topbar-title {
+    font-size: 13px;
+    font-weight: 700;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--fg-strong);
+  }
+  .topbar-actions { display: flex; gap: 8px; align-items: center; }
+
+  /* ---- Section ---- */
+  section { padding: 64px 32px; max-width: 1120px; margin: 0 auto; scroll-margin-top: 80px; }
+  @media (max-width: 640px) { section { padding: 40px 24px; } }
+  .section-eyebrow {
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin: 0 0 8px;
+  }
+  .section-title {
+    font-family: var(--font-body);
+    font-size: clamp(28px, 4vw, 40px);
+    font-weight: 700;
+    line-height: 1.2;
+    letter-spacing: -0.02em;
+    color: var(--fg-strong);
+    margin: 0 0 12px;
+  }
+  .section-desc {
+    font-size: 15px;
+    color: var(--fg-muted);
+    line-height: 1.6;
+    margin: 0 0 40px;
+    max-width: 640px;
+  }
+  .subsection { margin-top: 48px; }
+  .subsection-title {
+    font-size: 14px;
+    font-weight: 700;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--fg-strong);
+    margin: 0 0 8px;
+    padding-bottom: 12px;
+    border-bottom: 1px solid var(--border);
+  }
+  .subsection-desc { font-size: 13px; color: var(--fg-muted); margin: 0 0 20px; }
+
+  /* ---- Cover ---- */
+  .cover {
+    border-bottom: 1px solid var(--border);
+    padding: 88px 32px 96px;
+    max-width: 1120px;
+    margin: 0 auto;
+  }
+  .cover-logo {
+    font-family: var(--font-logo);
+    font-size: clamp(56px, 12vw, 120px);
+    font-weight: 700;
+    letter-spacing: 0;
+    color: var(--fg-strong);
+    text-transform: uppercase;
+    line-height: 1;
+    margin: 0 0 24px;
+  }
+  .cover-tagline {
+    font-size: clamp(20px, 3vw, 28px);
+    font-weight: 500;
+    line-height: 1.3;
+    letter-spacing: -0.01em;
+    color: var(--fg);
+    max-width: 720px;
+    margin: 0 0 16px;
+  }
+  .cover-meta {
+    display: flex; flex-wrap: wrap; gap: 16px;
+    margin-top: 32px;
+    font-size: 12px;
+    color: var(--fg-subtle);
+    letter-spacing: 0.04em;
+  }
+  .cover-meta span { display: inline-flex; align-items: center; gap: 4px; }
+  .cover-meta strong { color: var(--fg-strong); font-weight: 700; }
+
+  /* ---- Color Tokens Grid ---- */
+  .swatch-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); gap: 12px; }
+  .swatch { border: 1px solid var(--border); border-radius: var(--radius-lg); overflow: hidden; }
+  .swatch-block { height: 72px; }
+  .swatch-meta { padding: 10px 12px; }
+  .swatch-name { font-size: 12px; font-weight: 700; color: var(--fg-strong); margin: 0 0 2px; }
+  .swatch-hex { font-size: 11px; color: var(--fg-muted); font-family: ui-monospace, 'JetBrains Mono', monospace; }
+  .swatch-role { font-size: 11px; color: var(--fg-subtle); margin-top: 4px; line-height: 1.4; }
+  .swatch-block.bordered { border-bottom: 1px solid var(--border); }
+
+  /* ---- Highlighter demo ---- */
+  .hl { padding: 0 4px; border-radius: var(--radius-sm); color: inherit; }
+  .hl-yellow { background: var(--hl-yellow); }
+  .hl-blue   { background: var(--hl-blue); }
+  .hl-green  { background: var(--hl-green); }
+  .hl-red    { background: var(--hl-red); }
+
+  .dot { display: inline-block; width: 8px; height: 8px; border-radius: var(--radius-pill); margin-right: 6px; vertical-align: middle; }
+  .dot-yellow { background: var(--dot-yellow); }
+  .dot-blue   { background: var(--dot-blue); }
+  .dot-green  { background: var(--dot-green); }
+
+  /* ---- Typography demo ---- */
+  .type-row { display: grid; grid-template-columns: 140px 1fr; gap: 24px; padding: 16px 0; border-bottom: 1px solid var(--border); align-items: baseline; }
+  .type-row:last-child { border-bottom: 0; }
+  .type-label { font-size: 11px; color: var(--fg-subtle); font-family: ui-monospace, 'JetBrains Mono', monospace; }
+  .type-label small { display: block; color: var(--fg-faint); margin-top: 4px; }
+  .type-sample.t-logo    { font-family: var(--font-logo); font-size: 24px; font-weight: 700; letter-spacing: 0; text-transform: uppercase; color: var(--fg-strong); }
+  .type-sample.t-displayL { font-size: 32px; font-weight: 700; line-height: 1.2; letter-spacing: -0.02em; color: var(--fg-strong); }
+  .type-sample.t-displayM { font-size: 24px; font-weight: 700; line-height: 1.25; letter-spacing: -0.015em; color: var(--fg-strong); }
+  .type-sample.t-h1 { font-size: 20px; font-weight: 700; line-height: 1.3; letter-spacing: -0.01em; color: var(--fg-strong); }
+  .type-sample.t-h2 { font-size: 18px; font-weight: 700; line-height: 1.35; letter-spacing: -0.01em; color: var(--fg-strong); }
+  .type-sample.t-h3 { font-size: 16px; font-weight: 600; line-height: 1.4; color: var(--fg-strong); }
+  .type-sample.t-bodyL { font-size: 16px; font-weight: 400; line-height: 1.6; color: var(--fg); }
+  .type-sample.t-body { font-size: 14px; font-weight: 400; line-height: 1.6; color: var(--fg); }
+  .type-sample.t-bodyS { font-size: 13px; font-weight: 400; line-height: 1.5; color: var(--fg); }
+  .type-sample.t-label { font-size: 12px; font-weight: 500; letter-spacing: 0.02em; color: var(--fg-muted); }
+  .type-sample.t-labelCaps { font-size: 12px; font-weight: 700; letter-spacing: 0.16em; text-transform: uppercase; color: var(--fg-strong); }
+  .type-sample.t-caption { font-size: 10px; font-weight: 400; letter-spacing: 0.02em; color: var(--fg-subtle); }
+
+  /* ---- Weight specimen ---- */
+  .weight-row { display: grid; grid-template-columns: 80px 1fr; gap: 16px; padding: 12px 0; align-items: baseline; }
+  .weight-row .label { font-size: 11px; color: var(--fg-subtle); font-family: ui-monospace, 'JetBrains Mono', monospace; }
+  .weight-row .sample { font-size: 22px; color: var(--fg-strong); letter-spacing: -0.01em; }
+
+  /* ---- Buttons ---- */
+  .btn {
+    display: inline-flex; align-items: center; justify-content: center; gap: 8px;
+    border: 0; cursor: pointer;
+    font: inherit; font-weight: 600; font-size: 14px;
+    padding: 12px 24px; border-radius: var(--radius-lg);
+    transition: background 0.15s ease-out, transform 0.15s ease-out, border-color 0.15s ease-out;
+  }
+  .btn:active { transform: scale(0.98); }
+  .btn-primary { background: var(--accent); color: #FFFFFF; box-shadow: var(--shadow-card); }
+  .btn-primary:hover { background: var(--accent-hover); }
+  .btn-primary-block { width: 100%; padding-block: 16px; }
+  .btn-secondary { background: transparent; color: var(--fg); border: 1px solid var(--border-strong); }
+  .btn-secondary:hover { border-color: var(--fg-muted); }
+  .btn-ghost { background: transparent; color: var(--fg-muted); padding: 8px 12px; }
+  .btn-ghost:hover { color: var(--fg-strong); }
+  .btn-destructive { background: var(--danger); color: #FFFFFF; }
+  .btn-icon {
+    width: 44px; height: 44px; padding: 0;
+    border-radius: var(--radius-pill);
+    background: transparent; color: var(--fg);
+  }
+  .btn-icon:hover { background: var(--surface-alt); }
+  .btn:disabled { opacity: 0.4; cursor: not-allowed; }
+
+  .button-row { display: flex; flex-wrap: wrap; gap: 12px; align-items: center; }
+
+  /* ---- Inputs (Ghost) ---- */
+  .field { position: relative; margin-bottom: 24px; }
+  .field input,
+  .field textarea {
+    width: 100%;
+    border: 1px solid var(--border-strong);
+    border-radius: var(--radius-md);
+    background: transparent;
+    color: var(--fg);
+    font: inherit;
+    font-size: 14px;
+    padding: 28px 16px 12px;
+    outline: 0;
+    transition: border-color 0.15s ease-out;
+  }
+  .field textarea { padding-top: 28px; resize: vertical; min-height: 100px; }
+  .field input::placeholder, .field textarea::placeholder { color: transparent; }
+  .field label {
+    position: absolute;
+    inset-inline-start: 16px;
+    top: 12px;
+    font-size: 12px;
+    color: var(--fg-subtle);
+    pointer-events: none;
+    transition: all 0.15s ease-out;
+    background: transparent;
+  }
+  .field input:focus,
+  .field textarea:focus { border-color: var(--accent); border-width: 1.5px; padding: 27.5px 16px 11.5px; }
+  .field input:focus + label,
+  .field textarea:focus + label,
+  .field input:not(:placeholder-shown) + label,
+  .field textarea:not(:placeholder-shown) + label {
+    top: -8px;
+    font-size: 10px;
+    background: var(--surface);
+    padding: 0 4px;
+    color: var(--accent);
+  }
+  .field-helper { font-size: 11px; color: var(--fg-subtle); margin-top: 4px; padding-inline-start: 4px; }
+  .field-counter { position: absolute; bottom: 8px; inset-inline-end: 12px; font-size: 10px; color: var(--fg-subtle); }
+
+  /* ---- Checkbox / Radio / Switch ---- */
+  .control-row { display: flex; flex-direction: column; gap: 12px; }
+  .control {
+    display: inline-flex; align-items: center; gap: 12px; cursor: pointer;
+    font-size: 14px; color: var(--fg);
+  }
+  .control input { display: none; }
+  .check-box {
+    width: 18px; height: 18px;
+    border: 1.5px solid var(--border-strong);
+    border-radius: var(--radius-md);
+    background: transparent;
+    display: inline-flex; align-items: center; justify-content: center;
+    transition: all 0.15s ease-out;
+  }
+  .control input:checked + .check-box {
+    background: var(--accent);
+    border-color: var(--accent);
+  }
+  .control input:checked + .check-box::after {
+    content: '';
+    width: 10px; height: 6px;
+    border-inline-start: 1.5px solid #FFFFFF;
+    border-block-end: 1.5px solid #FFFFFF;
+    transform: rotate(-45deg) translate(1px, -1px);
+  }
+  .radio-circle {
+    width: 18px; height: 18px;
+    border: 1.5px solid var(--border-strong);
+    border-radius: var(--radius-pill);
+    background: transparent;
+    display: inline-flex; align-items: center; justify-content: center;
+  }
+  .control input:checked + .radio-circle { border-color: var(--accent); }
+  .control input:checked + .radio-circle::after {
+    content: ''; width: 8px; height: 8px; background: var(--accent); border-radius: var(--radius-pill);
+  }
+  .switch-track {
+    width: 44px; height: 24px;
+    background: var(--fg-faint);
+    border-radius: var(--radius-pill);
+    position: relative;
+    transition: background 0.2s ease-out;
+  }
+  .switch-track::after {
+    content: '';
+    position: absolute;
+    inset-block-start: 2px;
+    inset-inline-start: 2px;
+    width: 20px; height: 20px;
+    background: #FFFFFF;
+    border-radius: var(--radius-pill);
+    border: 1px solid var(--border-strong);
+    transition: transform 0.2s ease-out;
+  }
+  .control input:checked + .switch-track { background: var(--accent); }
+  .control input:checked + .switch-track::after { transform: translateX(20px); }
+  [dir="rtl"] .control input:checked + .switch-track::after { transform: translateX(-20px); }
+
+  /* ---- Chips / Tags ---- */
+  .chip {
+    display: inline-flex; align-items: center; gap: 4px;
+    padding: 4px 10px;
+    background: var(--surface-alt);
+    color: var(--fg-muted);
+    font-size: 12px; font-weight: 500;
+    border-radius: var(--radius-sm);
+  }
+  .chip.solid { background: var(--accent); color: #FFFFFF; font-weight: 600; }
+  .chip.outline { background: transparent; border: 1px solid var(--border-strong); }
+  .filter-chip {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 8px 16px;
+    border-radius: var(--radius-pill);
+    background: var(--surface-alt);
+    color: var(--fg-muted);
+    font-size: 13px;
+    font-weight: 500;
+    line-height: 1;
+  }
+  .filter-chip.active {
+    background: var(--fg);
+    color: var(--surface);
+    font-weight: 700;
+  }
+
+  .badge-dot {
+    display: inline-block;
+    width: 8px; height: 8px;
+    background: var(--accent);
+    border-radius: var(--radius-pill);
+  }
+  .badge-pill {
+    display: inline-flex; align-items: center; justify-content: center;
+    min-width: 18px; height: 18px;
+    padding: 0 6px;
+    background: var(--accent);
+    color: #FFFFFF;
+    font-size: 10px; font-weight: 700;
+    border-radius: var(--radius-pill);
+  }
+
+  .chip-row { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; }
+
+  /* ---- Cards ---- */
+  .demo-grid { display: grid; gap: 24px; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); }
+  .card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-lg);
+    padding: 20px;
+    transition: border-color 0.15s ease-out;
+  }
+  .card:hover { border-color: var(--border-strong); }
+  .card-eyebrow { font-size: 11px; font-weight: 700; letter-spacing: 0.16em; text-transform: uppercase; color: var(--accent); margin: 0 0 8px; }
+  .card h3 { font-size: 16px; font-weight: 700; color: var(--fg-strong); margin: 0 0 8px; line-height: 1.3; }
+  .card p { font-size: 13px; color: var(--fg-muted); margin: 0; line-height: 1.5; }
+  .card-divider { height: 1px; background: var(--border); margin: 16px 0; }
+
+  /* ---- List item (content row) ---- */
+  .list { display: flex; flex-direction: column; gap: 16px; }
+  .list-item { display: grid; grid-template-columns: 84px minmax(0, 1fr) 52px; gap: 16px; align-items: center; }
+  .list-thumb {
+    width: 84px; height: 84px;
+    background: var(--surface-alt);
+    border-radius: var(--radius-sm);
+    overflow: hidden;
+    flex-shrink: 0;
+    display: flex; align-items: center; justify-content: center;
+    color: var(--fg-faint);
+  }
+  .list-thumb .material-symbols-outlined { font-size: 32px; }
+  .list-meta { display: flex; flex-direction: column; gap: 4px; min-width: 0; }
+  .list-title { font-size: 18px; font-weight: 700; color: var(--fg-strong); margin: 0; line-height: 1.3; }
+  .list-sub { font-size: 13px; color: var(--fg-muted); margin: 0; display: flex; align-items: center; gap: 4px; }
+  .list-sub .material-symbols-outlined { font-size: 14px; }
+  .list-action {
+    align-self: end;
+    justify-self: end;
+    display: grid;
+    grid-template-columns: 17px minmax(0, 1fr);
+    align-items: center;
+    justify-items: start;
+    gap: 4px;
+    width: 52px;
+    padding-bottom: 4px;
+    color: var(--accent);
+    font-size: 13px;
+    line-height: 1;
+    font-variant-numeric: tabular-nums;
+    white-space: nowrap;
+  }
+  .list-action .material-symbols-outlined { width: 17px; font-size: 17px; line-height: 1; }
+  .list-action .count { color: var(--fg-muted); line-height: 1; }
+  .list-item.with-action-pair { grid-template-columns: 84px minmax(0, 1fr) 112px; }
+  .list-action-pair {
+    align-self: end;
+    justify-self: end;
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    gap: 12px;
+    width: 112px;
+    padding-bottom: 4px;
+  }
+  .list-action-pair .list-action {
+    width: auto;
+    grid-template-columns: 17px auto;
+    padding-bottom: 0;
+  }
+
+  /* ---- Calendar ---- */
+  .calendar { display: grid; grid-template-columns: repeat(7, 1fr); gap: 4px; text-align: center; }
+  .cal-dow { font-size: 11px; color: var(--fg-subtle); padding: 8px 0; font-weight: 500; }
+  .cal-day { position: relative; padding: 10px 0; font-size: 14px; color: var(--fg); }
+  .cal-day.muted { color: var(--fg-faint); }
+  .cal-day.selected {
+    display: inline-flex; align-items: center; justify-content: center;
+    margin: 4px auto; width: 32px; height: 32px;
+    background: var(--accent); color: #FFFFFF;
+    border-radius: var(--radius-pill); font-weight: 700;
+    padding: 0;
+  }
+  .cal-day .cal-dot {
+    position: absolute; bottom: 4px; left: 50%; transform: translateX(-50%);
+    width: 6px; height: 6px; border-radius: var(--radius-pill);
+  }
+
+  /* ---- Navigation patterns ---- */
+  .preview { border: 1px solid var(--border); border-radius: var(--radius-lg); overflow: hidden; background: var(--surface); }
+  .preview-label { padding: 8px 16px; background: var(--surface-alt); font-size: 11px; font-weight: 700; letter-spacing: 0.16em; text-transform: uppercase; color: var(--fg-muted); border-bottom: 1px solid var(--border); }
+
+  .topapp-bar {
+    display: grid;
+    grid-template-columns: 56px minmax(0, 1fr) 56px;
+    align-items: center;
+    height: 64px;
+    padding: 0 8px;
+    border-bottom: 1px solid var(--border);
+    background: var(--surface);
+  }
+  .topapp-brand { font-family: var(--font-logo); font-size: 22px; font-weight: 700; letter-spacing: 0; text-align: center; text-transform: uppercase; color: var(--fg-strong); }
+  .topapp-icon {
+    justify-self: center;
+    display: inline-flex;
+    width: 44px;
+    height: 44px;
+    align-items: center;
+    justify-content: center;
+    color: var(--fg);
+    font-size: 24px;
+  }
+
+  .subnav {
+    display: flex; gap: 32px;
+    padding: 12px 24px 0;
+    border-bottom: 1px solid var(--border);
+    background: var(--surface);
+  }
+  .subnav-item {
+    padding-bottom: 12px;
+    font-size: 16px; font-weight: 400;
+    line-height: 1.4;
+    color: var(--fg-subtle);
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    cursor: pointer;
+  }
+  .subnav-item.active { color: var(--accent); font-weight: 700; }
+
+  .text-tabs {
+    display: flex;
+    align-items: center;
+    gap: 36px;
+    height: 56px;
+    padding: 0 24px;
+    overflow-x: auto;
+    background: var(--surface);
+  }
+  .text-tab {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    height: 100%;
+    color: var(--fg-subtle);
+    font-size: 18px;
+    font-weight: 400;
+    white-space: nowrap;
+  }
+  .text-tab.active {
+    color: var(--accent);
+    font-weight: 700;
+  }
+  .text-tab-count { font-variant-numeric: tabular-nums; }
+
+  .bottomnav {
+    display: flex; justify-content: space-around; align-items: center;
+    padding: 12px 16px 16px;
+    background: color-mix(in srgb, var(--surface) 92%, transparent);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border-top: 1px solid var(--border);
+    box-shadow: var(--shadow-nav);
+  }
+  .bottomnav-item {
+    display: flex; flex-direction: column; align-items: center; gap: 2px;
+    color: var(--fg-subtle);
+    cursor: pointer;
+    padding: 8px;
+    transition: color 0.15s ease-out;
+  }
+  .bottomnav-item.active { color: var(--accent); }
+
+  /* ---- Modal demo (static) ---- */
+  .modal-demo {
+    position: relative;
+    background: linear-gradient(0deg, rgba(0,0,0,0.4), rgba(0,0,0,0.4)), var(--surface-alt);
+    padding: 40px 20px;
+    border-radius: var(--radius-lg);
+    border: 1px solid var(--border);
+    display: flex; align-items: center; justify-content: center;
+  }
+  .modal-sheet {
+    background: var(--surface);
+    border-radius: var(--radius-xl);
+    width: 100%;
+    max-width: 320px;
+    padding: 24px;
+    box-shadow: var(--shadow-modal);
+  }
+  .modal-sheet h4 { margin: 0 0 8px; font-size: 18px; font-weight: 700; color: var(--fg-strong); }
+  .modal-sheet p { margin: 0 0 20px; font-size: 14px; color: var(--fg-muted); }
+  .modal-actions { display: flex; gap: 8px; justify-content: flex-end; }
+
+  .toast {
+    display: inline-flex; align-items: center; gap: 12px;
+    background: var(--fg-strong);
+    color: var(--surface);
+    padding: 12px 16px;
+    border-radius: var(--radius-lg);
+    font-size: 13px; font-weight: 500;
+    box-shadow: var(--shadow-modal);
+  }
+  .toast .toast-action {
+    color: var(--accent);
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    font-size: 12px;
+    cursor: pointer;
+  }
+
+  /* ---- Mobile frame (for nav previews) ---- */
+  .phone {
+    width: 320px;
+    max-width: 100%;
+    margin: 0 auto;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-xl);
+    overflow: hidden;
+    box-shadow: var(--shadow-card);
+  }
+  .phone-body { padding: 24px; min-height: 160px; }
+
+  /* ---- Form sample (mobile) ---- */
+  .form-sample {
+    background: var(--surface);
+    padding: 20px;
+    border-radius: var(--radius-lg);
+    border: 1px solid var(--border);
+  }
+  .form-sample h4 { margin: 0 0 6px; font-size: 22px; font-weight: 700; color: var(--fg-strong); letter-spacing: -0.015em; }
+  .form-sample p.lead { margin: 0 0 32px; font-size: 13px; color: var(--fg-muted); line-height: 1.6; }
+
+  /* ---- Upload placeholder ---- */
+  .upload-box {
+    border: 1px dashed var(--border-dashed);
+    background: var(--surface-alt);
+    border-radius: var(--radius-lg);
+    padding: 32px 16px;
+    text-align: center;
+    color: var(--fg-muted);
+  }
+  .upload-box .icon-wrap {
+    width: 44px; height: 44px;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-pill);
+    box-shadow: var(--shadow-card);
+    display: inline-flex; align-items: center; justify-content: center;
+    margin-bottom: 12px;
+  }
+  .upload-box p { margin: 0; font-size: 13px; }
+  .upload-box small { font-size: 11px; color: var(--fg-subtle); }
+
+  /* ---- DO/DON'T ---- */
+  .rules { display: grid; gap: 24px; grid-template-columns: 1fr 1fr; }
+  @media (max-width: 720px) { .rules { grid-template-columns: 1fr; } }
+  .rule {
+    padding: 20px;
+    border-radius: var(--radius-lg);
+    border: 1px solid var(--border);
+  }
+  .rule h4 { margin: 0 0 12px; font-size: 11px; font-weight: 700; letter-spacing: 0.16em; text-transform: uppercase; }
+  .rule.do h4 { color: var(--success); }
+  .rule.dont h4 { color: var(--danger); }
+  .rule ul { list-style: none; padding: 0; margin: 0; display: flex; flex-direction: column; gap: 8px; font-size: 13px; color: var(--fg); line-height: 1.5; }
+  .rule ul li::before { content: '— '; color: var(--fg-subtle); }
+
+  /* ---- Footer ---- */
+  footer {
+    border-top: 1px solid var(--border);
+    padding: 48px 32px;
+    text-align: center;
+    color: var(--fg-subtle);
+    font-size: 12px;
+  }
+  footer .brand { font-family: var(--font-logo); font-size: 24px; font-weight: 700; color: var(--fg-strong); letter-spacing: 0; text-transform: uppercase; margin: 0 0 8px; display: inline-block; }
+
+  /* Scrollbar polish */
+  ::-webkit-scrollbar { width: 8px; height: 8px; }
+  ::-webkit-scrollbar-thumb { background: var(--border-strong); border-radius: var(--radius-pill); }
+  ::-webkit-scrollbar-track { background: transparent; }
+</style>
+</head>
+<body>
+
+<div class="page">
+  <!-- ───────── Sidebar ───────── -->
+  <aside class="sidebar">
+    <div class="sidebar-brand">
+      BLENDING
+      <span class="sidebar-brand-tag">DS</span>
+    </div>
+    <nav class="sidebar-nav">
+      <div class="sidebar-section-title">Foundation</div>
+      <a href="#cover" class="active">Overview</a>
+      <a href="#color">Color</a>
+      <a href="#highlighter">Highlighter</a>
+      <a href="#typography">Typography</a>
+      <a href="#radius-space">Radius &amp; Space</a>
+      <div class="sidebar-section-title">Components</div>
+      <a href="#buttons">Buttons</a>
+      <a href="#forms">Forms</a>
+      <a href="#tags">Tags &amp; Badges</a>
+      <a href="#cards">Cards &amp; Lists</a>
+      <a href="#calendar">Calendar</a>
+      <a href="#nav">Navigation</a>
+      <a href="#feedback">Modal &amp; Toast</a>
+      <div class="sidebar-section-title">Guide</div>
+      <a href="#rules">Do &amp; Don't</a>
+    </nav>
+  </aside>
+
+  <!-- ───────── Main ───────── -->
+  <main class="main">
+    <!-- Top Bar -->
+    <div class="topbar">
+      <div class="topbar-title">Design System v1.0</div>
+      <div class="topbar-actions"></div>
+    </div>
+
+    <!-- ───────── Cover ───────── -->
+    <section id="cover" class="cover">
+      <h1 class="cover-logo">BLENDING</h1>
+      <p class="cover-tagline">커피 커뮤니티를 위한 디자인 시스템 — 흰 종이 위 검은 글씨, 그리고 한 점의 빨강.</p>
+      <div class="cover-meta">
+        <span><strong>v1.0</strong></span>
+        <span>· 라이트 전용</span>
+        <span>· iOS · Android · Web</span>
+        <span>· 한글 + 영문 ALL CAPS</span>
+        <span>· Galmuri11 + SeoulNamsan</span>
+      </div>
+      <div style="margin-top:24px;padding:16px 20px;border:1px solid var(--border-strong);border-radius:var(--radius-lg);background:var(--surface-alt);font-size:13px;line-height:1.6;color:var(--fg-muted);">
+        <p style="margin:0 0 8px;font-weight:700;color:var(--fg-strong);">📌 동기화 범위 안내</p>
+        <p style="margin:0 0 8px;">본 HTML 페이지는 <strong>정적 참고 예제</strong>이며, 아직 모든 제품 컴포넌트 및 상태와 동기화되지 않았습니다.</p>
+        <p style="margin:0 0 4px;">• <strong>실제 제품 CSS:</strong> <a href="../web/app/globals.css" style="color:var(--accent);text-decoration:underline;">web/app/globals.css</a></p>
+        <p style="margin:0 0 4px;">• <strong>공통 컴포넌트 API:</strong>
+          <a href="../web/src/ui/shared/Button.tsx" style="color:var(--accent);text-decoration:underline;">Button.tsx</a>,
+          <a href="../web/src/ui/shared/LinkButton.tsx" style="color:var(--accent);text-decoration:underline;">LinkButton.tsx</a>,
+          <a href="../web/src/ui/shared/Input.tsx" style="color:var(--accent);text-decoration:underline;">Input.tsx</a>,
+          <a href="../web/src/ui/shared/Field.tsx" style="color:var(--accent);text-decoration:underline;">Field.tsx</a>
+        </p>
+        <p style="margin:0;">• <strong>실측 렌더링 및 현황:</strong> <a href="design-system-inventory.md" style="color:var(--accent);text-decoration:underline;">docs/design-system-inventory.md</a></p>
+      </div>
+    </section>
+
+    <!-- ───────── Color ───────── -->
+    <section id="color">
+      <div class="section-eyebrow">01 · Color</div>
+      <h2 class="section-title">컬러 토큰</h2>
+      <p class="section-desc">흰 배경 + 검정 텍스트 + 빨강 액센트 1회 — 이 비율을 절대 깨지 않습니다. 실제 제품은 단일 라이트 모드 시맨틱을 따릅니다.</p>
+
+      <div class="subsection">
+        <h3 class="subsection-title">Surface &amp; Foreground</h3>
+        <div class="swatch-grid">
+          <div class="swatch"><div class="swatch-block bordered" style="background: var(--bg)"></div><div class="swatch-meta"><p class="swatch-name">bg</p><span class="swatch-hex">라이트 배경</span><p class="swatch-role">페이지 기본 배경</p></div></div>
+          <div class="swatch"><div class="swatch-block bordered" style="background: var(--surface-alt)"></div><div class="swatch-meta"><p class="swatch-name">surface-alt</p><span class="swatch-hex">보조 표면</span><p class="swatch-role">태그 배경, 업로드 박스</p></div></div>
+          <div class="swatch"><div class="swatch-block" style="background: var(--fg)"></div><div class="swatch-meta"><p class="swatch-name">fg</p><span class="swatch-hex">본문 텍스트</span><p class="swatch-role">본문, 헤드라인</p></div></div>
+          <div class="swatch"><div class="swatch-block" style="background: var(--fg-muted)"></div><div class="swatch-meta"><p class="swatch-name">fg-muted</p><span class="swatch-hex">#6B7280</span><p class="swatch-role">보조 텍스트, 일시</p></div></div>
+          <div class="swatch"><div class="swatch-block" style="background: var(--fg-subtle)"></div><div class="swatch-meta"><p class="swatch-name">fg-subtle</p><span class="swatch-hex">#9CA3AF</span><p class="swatch-role">캡션, placeholder</p></div></div>
+          <div class="swatch"><div class="swatch-block bordered" style="background: var(--border)"></div><div class="swatch-meta"><p class="swatch-name">border</p><span class="swatch-hex">#F3F4F6</span><p class="swatch-role">디바이더, 카드 보더</p></div></div>
+        </div>
+      </div>
+
+      <div class="subsection">
+        <h3 class="subsection-title">Accent (단일)</h3>
+        <div class="swatch-grid">
+          <div class="swatch"><div class="swatch-block" style="background: var(--accent)"></div><div class="swatch-meta"><p class="swatch-name">accent</p><span class="swatch-hex">#FF0000</span><p class="swatch-role">CTA, 활성 탭, 하트 — 한 화면 최대 2회</p></div></div>
+          <div class="swatch"><div class="swatch-block" style="background: var(--accent-soft)"></div><div class="swatch-meta"><p class="swatch-name">accent-soft</p><span class="swatch-hex">20% alpha</span><p class="swatch-role">텍스트 selection</p></div></div>
+        </div>
+      </div>
+
+      <div class="subsection">
+        <h3 class="subsection-title">Semantic</h3>
+        <div class="swatch-grid">
+          <div class="swatch"><div class="swatch-block" style="background: var(--success)"></div><div class="swatch-meta"><p class="swatch-name">success</p><span class="swatch-hex">#17A34A</span></div></div>
+          <div class="swatch"><div class="swatch-block" style="background: var(--warn)"></div><div class="swatch-meta"><p class="swatch-name">warn</p><span class="swatch-hex">#EAB308</span></div></div>
+          <div class="swatch"><div class="swatch-block" style="background: var(--danger)"></div><div class="swatch-meta"><p class="swatch-name">danger</p><span class="swatch-hex">#DC2626</span></div></div>
+          <div class="swatch"><div class="swatch-block" style="background: var(--info)"></div><div class="swatch-meta"><p class="swatch-name">info</p><span class="swatch-hex">#4A90E2</span></div></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ───────── Highlighter ───────── -->
+    <section id="highlighter">
+      <div class="section-eyebrow">02 · Signature</div>
+      <h2 class="section-title">하이라이터 + 캘린더 도트</h2>
+      <p class="section-desc">텍스트 뒤를 형광펜처럼 칠하는 4색 시스템 — <strong style="color:var(--fg-strong)">커뮤니티 탭(일정/세미나/모임) 전용</strong>입니다. Recipe / Q&amp;A / 프로필 / 설정 등 다른 탭의 리스트 타이틀에는 절대 적용하지 않습니다. 카테고리 분류 기능이 없는 곳에서 장식 목적으로 쓰면 시그니처가 무너집니다.</p>
+
+      <div style="margin-bottom:24px;padding:16px 20px;border:1px solid var(--accent);border-radius:var(--radius-lg);background:var(--accent-soft)">
+        <p style="margin:0;font-size:13px;color:var(--fg-strong);line-height:1.6"><strong style="letter-spacing:0.08em;text-transform:uppercase;font-size:11px">⚠ Scope rule</strong><br>노랑 / 파랑 / 그린 하이라이터는 <strong>커뮤니티 탭 내부의 리스트 타이틀 + 캘린더 라벨</strong>에서만 사용. 그 외 탭은 평문(fg-strong) 또는 칩 / 뱃지로 카테고리를 표시합니다. <code style="font-family:ui-monospace,monospace;font-size:12px">hl-red</code>(긴급)는 전역 사용 가능하지만 한 화면 1회.</p>
+      </div>
+
+      <div class="subsection">
+        <h3 class="subsection-title">Highlighter — 4 카테고리 (커뮤니티 탭 전용)</h3>
+        <div style="display: flex; flex-direction: column; gap: 16px; font-size: 16px; line-height: 1.8;">
+          <div><span class="dot dot-yellow"></span> <span class="hl hl-yellow">Latte Art Masterclass</span> &nbsp;<span style="color: var(--fg-muted); font-size: 13px;">— Official / 공식 일정</span></div>
+          <div><span class="dot dot-blue"></span> <span class="hl hl-blue">Roasting Basics Seminar</span> &nbsp;<span style="color: var(--fg-muted); font-size: 13px;">— Seminar / 세미나</span></div>
+          <div><span class="dot dot-green"></span> <span class="hl hl-green">Hand Drip Workshop</span> &nbsp;<span style="color: var(--fg-muted); font-size: 13px;">— Meetup / 비공식</span></div>
+          <div><span style="display:inline-block;width:8px;height:8px;background:var(--accent);border-radius:9999px;margin-inline-end:6px;vertical-align:middle"></span><span class="hl hl-red">신청 마감 임박</span> &nbsp;<span style="color: var(--fg-muted); font-size: 13px;">— 긴급/강조</span></div>
+        </div>
+      </div>
+
+      <div class="subsection">
+        <h3 class="subsection-title">Calendar Dot</h3>
+        <p class="subsection-desc">캘린더 셀 하단의 6px 도트만 사용. 그 외 도트 사용 금지.</p>
+        <div class="chip-row" style="gap: 24px; font-size: 13px; color: var(--fg-muted);">
+          <span><span class="dot dot-yellow"></span> Official #FFD700</span>
+          <span><span class="dot dot-blue"></span> Seminar #4A90E2</span>
+          <span><span class="dot dot-green"></span> Meetup #50E3C2</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- ───────── Typography ───────── -->
+    <section id="typography">
+      <div class="section-eyebrow">03 · Typography</div>
+      <h2 class="section-title">타입 시스템</h2>
+      <p class="section-desc">로고만 Galmuri11(픽셀), 그 외 모두 서울남산체. 영문 ALL CAPS는 반드시 tracking 0.16em.</p>
+
+      <div class="subsection">
+        <h3 class="subsection-title">서울남산체 — 4 Weights</h3>
+        <div class="weight-row"><span class="label">L · 300</span><span class="sample" style="font-weight: 300;">아메리카노 한 잔의 무게는 220그램이다.</span></div>
+        <div class="weight-row"><span class="label">M · 500</span><span class="sample" style="font-weight: 500;">아메리카노 한 잔의 무게는 220그램이다.</span></div>
+        <div class="weight-row"><span class="label">B · 700</span><span class="sample" style="font-weight: 700;">아메리카노 한 잔의 무게는 220그램이다.</span></div>
+        <div class="weight-row"><span class="label">EB · 800</span><span class="sample" style="font-weight: 800;">아메리카노 한 잔의 무게는 220그램이다.</span></div>
+      </div>
+
+      <div class="subsection">
+        <h3 class="subsection-title">Galmuri11 — Logo Only</h3>
+        <div style="padding: 32px; border: 1px dashed var(--border-dashed); border-radius: var(--radius-lg); text-align: center;">
+          <div style="font-family: var(--font-logo); font-size: 64px; font-weight: 700; letter-spacing: 0; color: var(--fg-strong); text-transform: uppercase; line-height: 1;">BLENDING</div>
+          <p style="margin: 16px 0 0; color: var(--fg-subtle); font-size: 11px; letter-spacing: 0.16em; text-transform: uppercase;">Logo / Wordmark only — never body, never headings</p>
+        </div>
+      </div>
+
+      <div class="subsection">
+        <h3 class="subsection-title">Type Scale</h3>
+        <div class="type-row"><span class="type-label">Logo<small>Galmuri 24/1.0</small></span><span class="type-sample t-logo">BLENDING</span></div>
+        <div class="type-row"><span class="type-label">Display L<small>32/1.2 · -0.02em</small></span><span class="type-sample t-displayL">일정 요청하기</span></div>
+        <div class="type-row"><span class="type-label">Display M<small>24/1.25 · -0.015em</small></span><span class="type-sample t-displayM">October 2023</span></div>
+        <div class="type-row"><span class="type-label">H1<small>20/1.3 · 700</small></span><span class="type-sample t-h1">이번 주 이벤트</span></div>
+        <div class="type-row"><span class="type-label">H2<small>18/1.35 · 700</small></span><span class="type-sample t-h2">이벤트 후기</span></div>
+        <div class="type-row"><span class="type-label">H3<small>16/1.4 · 600</small></span><span class="type-sample t-h3">Latte Art Masterclass</span></div>
+        <div class="type-row"><span class="type-label">Body L<small>16/1.6</small></span><span class="type-sample t-bodyL">새로운 공식 일정, 세미나, 비공식 일정에 대한 정보를 운영팀에 제출해 주세요.</span></div>
+        <div class="type-row"><span class="type-label">Body<small>14/1.6</small></span><span class="type-sample t-body">2023.10.10, 14:00 ~ 16:00, Seoul Station Branch</span></div>
+        <div class="type-row"><span class="type-label">Body S<small>13/1.5</small></span><span class="type-sample t-bodyS">최대 500자, JPG 또는 PNG 5MB 이하</span></div>
+        <div class="type-row"><span class="type-label">Label<small>12/1.4 · 500</small></span><span class="type-sample t-label">이벤트 제목</span></div>
+        <div class="type-row"><span class="type-label">Label CAPS<small>12 · 0.16em · 700</small></span><span class="type-sample t-labelCaps">Calendar</span></div>
+        <div class="type-row"><span class="type-label">Caption<small>10/1.4</small></span><span class="type-sample t-caption">0/500</span></div>
+      </div>
+    </section>
+
+    <!-- ───────── Radius & Space ───────── -->
+    <section id="radius-space">
+      <div class="section-eyebrow">04 · Geometry</div>
+      <h2 class="section-title">반경 &amp; 여백</h2>
+      <p class="section-desc">반경 4단계 + 4px 그리드 여백. 한 화면에 반경 2단계 초과 금지.</p>
+
+      <div class="subsection">
+        <h3 class="subsection-title">Border Radius</h3>
+        <div style="display: flex; gap: 16px; flex-wrap: wrap; align-items: flex-end;">
+          <div style="text-align: center;">
+            <div style="width: 80px; height: 80px; background: var(--accent); border-radius: var(--radius-sm);"></div>
+            <p style="margin: 8px 0 0; font-size: 11px; color: var(--fg-muted);">sm · 2px<br><small>chip / tag</small></p>
+          </div>
+          <div style="text-align: center;">
+            <div style="width: 80px; height: 80px; background: var(--accent); border-radius: var(--radius-md);"></div>
+            <p style="margin: 8px 0 0; font-size: 11px; color: var(--fg-muted);">md · 4px<br><small>input</small></p>
+          </div>
+          <div style="text-align: center;">
+            <div style="width: 80px; height: 80px; background: var(--accent); border-radius: var(--radius-lg);"></div>
+            <p style="margin: 8px 0 0; font-size: 11px; color: var(--fg-muted);">lg · 8px<br><small>card / button</small></p>
+          </div>
+          <div style="text-align: center;">
+            <div style="width: 80px; height: 80px; background: var(--accent); border-radius: var(--radius-xl);"></div>
+            <p style="margin: 8px 0 0; font-size: 11px; color: var(--fg-muted);">xl · 12px<br><small>modal</small></p>
+          </div>
+          <div style="text-align: center;">
+            <div style="width: 80px; height: 80px; background: var(--accent); border-radius: var(--radius-pill);"></div>
+            <p style="margin: 8px 0 0; font-size: 11px; color: var(--fg-muted);">pill · 9999<br><small>avatar / FAB</small></p>
+          </div>
+        </div>
+      </div>
+
+      <div class="subsection">
+        <h3 class="subsection-title">Space Scale — 4px Grid</h3>
+        <div style="display: flex; flex-direction: column; gap: 8px;">
+          <div style="display: flex; align-items: center; gap: 12px;"><div style="width: 4px;  height: 12px; background: var(--accent);"></div><span style="font-size: 12px; color: var(--fg-muted); font-family: ui-monospace, monospace;">4px · 미세 간격</span></div>
+          <div style="display: flex; align-items: center; gap: 12px;"><div style="width: 8px;  height: 12px; background: var(--accent);"></div><span style="font-size: 12px; color: var(--fg-muted); font-family: ui-monospace, monospace;">8px · 인라인 갭</span></div>
+          <div style="display: flex; align-items: center; gap: 12px;"><div style="width: 12px; height: 12px; background: var(--accent);"></div><span style="font-size: 12px; color: var(--fg-muted); font-family: ui-monospace, monospace;">12px · 텍스트-아이콘</span></div>
+          <div style="display: flex; align-items: center; gap: 12px;"><div style="width: 16px; height: 12px; background: var(--accent);"></div><span style="font-size: 12px; color: var(--fg-muted); font-family: ui-monospace, monospace;">16px · 입력 좌우 padding</span></div>
+          <div style="display: flex; align-items: center; gap: 12px;"><div style="width: 20px; height: 12px; background: var(--accent);"></div><span style="font-size: 12px; color: var(--fg-muted); font-family: ui-monospace, monospace;">20px · 카드 내부 padding</span></div>
+          <div style="display: flex; align-items: center; gap: 12px;"><div style="width: 24px; height: 12px; background: var(--accent);"></div><span style="font-size: 12px; color: var(--fg-muted); font-family: ui-monospace, monospace;">24px · 페이지 좌우 padding (모바일)</span></div>
+          <div style="display: flex; align-items: center; gap: 12px;"><div style="width: 32px; height: 12px; background: var(--accent);"></div><span style="font-size: 12px; color: var(--fg-muted); font-family: ui-monospace, monospace;">32px · 섹션 갭, 폼 필드 갭</span></div>
+          <div style="display: flex; align-items: center; gap: 12px;"><div style="width: 48px; height: 12px; background: var(--accent);"></div><span style="font-size: 12px; color: var(--fg-muted); font-family: ui-monospace, monospace;">48px · 큰 섹션 갭</span></div>
+          <div style="display: flex; align-items: center; gap: 12px;"><div style="width: 64px; height: 12px; background: var(--accent);"></div><span style="font-size: 12px; color: var(--fg-muted); font-family: ui-monospace, monospace;">64px · 페이지 상하 여백</span></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ───────── Buttons ───────── -->
+    <section id="buttons">
+      <div class="section-eyebrow">05 · Components</div>
+      <h2 class="section-title">버튼</h2>
+      <p class="section-desc">Primary는 페이지당 1개. 풀폭 + 빨강 + rounded-lg(8px). 그림자는 Primary에만 가볍게.</p>
+
+      <div class="subsection">
+        <h3 class="subsection-title">Variants</h3>
+        <div class="button-row">
+          <button class="btn btn-primary">요청 보내기</button>
+          <button class="btn btn-secondary">취소</button>
+          <button class="btn btn-ghost">더 알아보기</button>
+          <button class="btn btn-destructive">삭제</button>
+          <button class="btn btn-primary" disabled>비활성</button>
+        </div>
+      </div>
+
+      <div class="subsection">
+        <h3 class="subsection-title">Primary Block — 페이지당 1개</h3>
+        <div style="max-width: 360px;">
+          <button class="btn btn-primary btn-primary-block">요청 보내기</button>
+        </div>
+        <p class="subsection-desc" style="margin-top:12px;">작성/등록/제출 같은 완료 액션과 상세 화면 하단 고정 주요 CTA는 상단 우측 텍스트 버튼이나 검정 버튼이 아니라 풀폭 Primary CTA로 배치합니다.</p>
+      </div>
+
+      <div class="subsection">
+        <h3 class="subsection-title">Icon Buttons — 44×44 hit area</h3>
+        <div class="button-row">
+          <button class="btn btn-icon"><span class="material-symbols-outlined">arrow_back</span></button>
+          <button class="btn btn-icon"><span class="material-symbols-outlined">search</span></button>
+          <button class="btn btn-icon"><span class="material-symbols-outlined">menu</span></button>
+          <button class="btn btn-icon"><span class="material-symbols-outlined">add</span></button>
+          <button class="btn btn-icon" style="color: var(--accent);"><span class="material-symbols-outlined filled">favorite</span></button>
+        </div>
+      </div>
+    </section>
+
+    <!-- ───────── Forms ───────── -->
+    <section id="forms">
+      <div class="section-eyebrow">06 · Components</div>
+      <h2 class="section-title">폼</h2>
+      <p class="section-desc">시그니처 ghost-input — transparent + 1px gray-200 + 플로팅 라벨. 포커스 시 라벨이 입력 영역 위로 떠오릅니다.</p>
+
+      <div class="demo-grid" style="grid-template-columns: 1fr 1fr; gap: 32px;">
+        <div>
+          <h3 class="subsection-title" style="margin-bottom: 24px;">Input · Textarea</h3>
+          <div class="field">
+            <input type="text" id="demo-title" placeholder=" " />
+            <label for="demo-title">이벤트 제목</label>
+          </div>
+          <div class="field">
+            <textarea id="demo-desc" rows="4" maxlength="500" placeholder=" "></textarea>
+            <label for="demo-desc">내용 (최대 500자)</label>
+            <span class="field-counter">0/500</span>
+          </div>
+          <div class="field">
+            <input type="text" id="demo-date" value="2024.05.20 - 2024.05.22" placeholder=" " />
+            <label for="demo-date">일정 (날짜 선택 또는 범위)</label>
+          </div>
+        </div>
+        <div>
+          <h3 class="subsection-title" style="margin-bottom: 24px;">Selection</h3>
+          <div class="control-row">
+            <label class="control"><input type="checkbox" checked /><span class="check-box"></span> 이메일 알림 받기</label>
+            <label class="control"><input type="checkbox" /><span class="check-box"></span> SMS 알림 받기</label>
+            <label class="control"><input type="checkbox" /><span class="check-box"></span> 마케팅 정보 수신 동의</label>
+          </div>
+          <div style="height: 24px;"></div>
+          <div class="control-row">
+            <label class="control"><input type="radio" name="cat" checked /><span class="radio-circle"></span> Official</label>
+            <label class="control"><input type="radio" name="cat" /><span class="radio-circle"></span> Seminar</label>
+            <label class="control"><input type="radio" name="cat" /><span class="radio-circle"></span> Meetup</label>
+          </div>
+          <div style="height: 24px;"></div>
+          <div class="control-row">
+            <label class="control"><input type="checkbox" checked /><span class="switch-track"></span> 알림받기</label>
+            <label class="control"><input type="checkbox" /><span class="switch-track"></span> 위치 정보 허용</label>
+          </div>
+        </div>
+      </div>
+
+      <div class="subsection">
+        <h3 class="subsection-title">Form Pattern · Mobile Example</h3>
+        <div style="max-width: 380px;">
+          <div class="form-sample">
+            <h4>일정 요청하기</h4>
+            <p class="lead">새로운 공식 일정, 세미나, 비공식 일정에 대한 정보를 운영팀에 제출해 주세요.</p>
+            <div class="field">
+              <input type="text" id="fs-title" placeholder=" " />
+              <label for="fs-title">이벤트 제목</label>
+            </div>
+            <div class="field">
+              <textarea id="fs-desc" rows="4" placeholder=" "></textarea>
+              <label for="fs-desc">내용 (최대 500자)</label>
+              <span class="field-counter">0/500</span>
+            </div>
+            <div class="upload-box">
+              <div class="icon-wrap"><span class="material-symbols-outlined" style="color: var(--fg-muted);">add_photo_alternate</span></div>
+              <p>이미지를 첨부하려면 탭하세요</p>
+              <small>JPG, PNG 최대 5MB</small>
+            </div>
+            <div style="height: 24px;"></div>
+            <button class="btn btn-primary btn-primary-block">요청 보내기</button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ───────── Tags & Badges ───────── -->
+    <section id="tags">
+      <div class="section-eyebrow">07 · Components</div>
+      <h2 class="section-title">태그 · 칩 · 뱃지</h2>
+      <p class="section-desc">태그는 sm 반경(2px) + surface-alt 배경. 강조 뱃지는 accent + pill.</p>
+
+      <div class="subsection">
+        <h3 class="subsection-title">Chips · Tags</h3>
+        <div class="chip-row">
+          <span class="chip">#Fantastic</span>
+          <span class="chip">#Educational</span>
+          <span class="chip">#ProBarista</span>
+          <span class="chip outline">#OutlineExample</span>
+          <span class="chip solid">강조</span>
+        </div>
+        <div class="chip-row" style="margin-top:16px">
+          <span class="filter-chip active">전체</span>
+          <span class="filter-chip">레시피</span>
+          <span class="filter-chip">홍보관</span>
+        </div>
+      </div>
+
+      <div class="subsection">
+        <h3 class="subsection-title">Badges</h3>
+        <div class="chip-row" style="gap: 32px; align-items: center;">
+          <span style="display: inline-flex; align-items: center; gap: 8px; font-size: 13px; color: var(--fg-muted);">
+            <span class="badge-dot"></span> 알림 도트
+          </span>
+          <span style="display: inline-flex; align-items: center; gap: 8px; font-size: 13px; color: var(--fg-muted);">
+            <span class="badge-pill">3</span> 카운트 뱃지
+          </span>
+          <span style="display: inline-flex; align-items: center; gap: 8px; font-size: 13px; color: var(--fg-muted);">
+            <span class="badge-pill">NEW</span> 텍스트 뱃지
+          </span>
+        </div>
+      </div>
+    </section>
+
+    <!-- ───────── Cards & Lists ───────── -->
+    <section id="cards">
+      <div class="section-eyebrow">08 · Components</div>
+      <h2 class="section-title">카드 &amp; 리스트</h2>
+      <p class="section-desc">콘텐츠 목록은 모두 84×84 썸네일 + 정보 컬럼 + 우측 메타/액션 컬럼의 행 패턴을 사용합니다. 커뮤니티와 파트너 목록 모두 동일하며, 카드뷰는 폼 보조 패널, 상태 안내처럼 목록이 아닌 단일 정보 블록에만 사용합니다.</p>
+
+      <div class="subsection">
+        <h3 class="subsection-title">Card — 목록에는 사용 금지</h3>
+        <article class="card">
+          <p class="card-eyebrow">Usage rule</p>
+          <h3>콘텐츠 목록은 카드가 아니라 리스트 행으로 표시</h3>
+          <p>Events / Event Reviews / Recipe / Q&amp;A / Partner Promotions / Partner Reviews 목록은 모두 아래 리스트 행 패턴을 사용합니다. 카드는 업로드 상태, 폼 내부 보조 정보, 단일 안내 패널에만 사용합니다.</p>
+        </article>
+      </div>
+
+      <div class="subsection">
+        <h3 class="subsection-title">List Item — Event Row <span style="font-size:10px;color:var(--accent);letter-spacing:0.08em;margin-inline-start:8px">· COMMUNITY TAB ONLY</span></h3>
+        <p class="subsection-desc">아래 리스트 타이틀의 하이라이터(노랑/파랑/그린)는 <strong>커뮤니티 탭에서만</strong> 사용. Recipe / Q&amp;A / 마이페이지 등 다른 탭의 리스트 타이틀은 평문(fg-strong)으로만 표기합니다.</p>
+        <div class="list">
+          <div class="list-item">
+            <div class="list-thumb"><span class="material-symbols-outlined">local_cafe</span></div>
+            <div class="list-meta">
+              <p class="list-title"><span class="hl hl-yellow">Latte Art Masterclass</span></p>
+              <p class="list-sub">2023.10.10, 14:00 - 16:00</p>
+              <p class="list-sub"><span class="material-symbols-outlined">location_on</span> Seoul Station Branch</p>
+            </div>
+            <span class="list-action"></span>
+          </div>
+          <div class="list-item">
+            <div class="list-thumb"><span class="material-symbols-outlined">coffee_maker</span></div>
+            <div class="list-meta">
+              <p class="list-title"><span class="hl hl-blue">Roasting Basics Seminar</span></p>
+              <p class="list-sub">2023.10.11, 10:00 - 12:00</p>
+              <p class="list-sub"><span class="material-symbols-outlined">location_on</span> Gangnam Roastery</p>
+            </div>
+            <span class="list-action"></span>
+          </div>
+          <div class="list-item">
+            <div class="list-thumb"><span class="material-symbols-outlined">water_drop</span></div>
+            <div class="list-meta">
+              <p class="list-title"><span class="hl hl-green">Hand Drip Workshop</span></p>
+              <p class="list-sub">2023.10.13, 11:00 - 13:00</p>
+              <p class="list-sub"><span class="material-symbols-outlined">location_on</span> Itaewon Studio</p>
+            </div>
+            <span class="list-action"></span>
+          </div>
+          <div class="list-item">
+            <div class="list-thumb"><span class="material-symbols-outlined">rate_review</span></div>
+            <div class="list-meta">
+              <p class="list-title"><span class="hl hl-blue">Great Latte Art session!</span></p>
+              <div class="chip-row" style="margin-top:4px"><span class="chip">#SkillUp</span><span class="chip">#Fun</span></div>
+            </div>
+            <span class="list-action"><span class="material-symbols-outlined">favorite_border</span><span class="count">95</span></span>
+          </div>
+        </div>
+      </div>
+
+      <div class="subsection">
+        <h3 class="subsection-title">List Item — 다른 탭 (Recipe / Q&amp;A) <span style="font-size:10px;color:var(--fg-muted);letter-spacing:0.08em;margin-inline-start:8px">· PLAIN TITLE</span></h3>
+        <p class="subsection-desc">커뮤니티 외 탭의 리스트는 타이틀을 평문으로만. 카테고리 표시가 필요하면 칩(chip)으로 분리합니다.</p>
+        <div class="list">
+          <div class="list-item">
+            <div class="list-thumb"><span class="material-symbols-outlined">menu_book</span></div>
+            <div class="list-meta">
+              <p class="list-title">콜드 브루 황금 비율 1:8</p>
+              <p class="list-sub">박바리스타 · 2026.05.02</p>
+              <div class="chip-row" style="margin-top:4px"><span class="chip">#Cold Brew</span><span class="chip">#Recipe</span></div>
+            </div>
+            <span class="list-action"><span class="material-symbols-outlined">favorite_border</span><span class="count">1.2k</span></span>
+          </div>
+          <div class="list-item with-action-pair">
+            <div class="list-thumb"><span class="material-symbols-outlined">help</span></div>
+            <div class="list-meta">
+              <p class="list-title">에스프레소 추출 시간이 들쭉날쭉합니다</p>
+              <p class="list-sub">답변 4 · 조회 128</p>
+              <div class="chip-row" style="margin-top:4px"><span class="chip">#Q&amp;A</span><span class="chip">#Espresso</span></div>
+            </div>
+            <span class="list-action-pair">
+              <span class="list-action"><span class="material-symbols-outlined">favorite_border</span><span class="count">12</span></span>
+              <span class="list-action" style="color:var(--fg-subtle)"><span class="material-symbols-outlined">chat_bubble</span><span class="count">4</span></span>
+            </span>
+          </div>
+          <p class="subsection-desc" style="margin-top:12px;">하트와 댓글 카운터를 함께 보여주는 Q&amp;A 행은 112px 우측 컬럼 안에서 한 줄로 배치합니다. 각 메타는 17px 아이콘 슬롯 + count 슬롯을 유지해 숫자 자리수가 달라도 아이콘 위치가 흔들리지 않게 합니다.</p>
+        </div>
+      </div>
+
+      <div class="subsection">
+        <h3 class="subsection-title">Section Header Pattern</h3>
+        <div style="border: 1px solid var(--border); border-radius: var(--radius-lg); padding: 20px;">
+          <div style="display: flex; justify-content: space-between; align-items: center; padding-bottom: 12px; border-bottom: 1px solid var(--border);">
+            <h3 style="margin: 0; font-size: 18px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.04em; color: var(--fg-strong);">이번 주 일정</h3>
+            <button class="btn btn-icon" style="width: 32px; height: 32px; color: var(--fg-muted);"><span class="material-symbols-outlined">add</span></button>
+          </div>
+          <p style="margin: 16px 0 0; color: var(--fg-muted); font-size: 13px;">— 섹션 헤더는 H2 + 보더 디바이더 + 우측 fg-muted ghost 액션 1개</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- ───────── Calendar ───────── -->
+    <section id="calendar">
+      <div class="section-eyebrow">09 · Components</div>
+      <h2 class="section-title">캘린더</h2>
+      <p class="section-desc">선택일은 32px 원형 + 빨강. 이벤트 표시는 하단 6px 도트로만.</p>
+
+      <div class="subsection">
+        <div style="max-width: 380px; padding: 24px; border: 1px solid var(--border); border-radius: var(--radius-lg);">
+          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px;">
+            <h3 style="margin: 0; font-size: 20px; font-weight: 700; letter-spacing: -0.01em;">October 2023</h3>
+            <div style="display:flex; gap: 12px; font-size: 11px; color: var(--fg-muted);">
+              <span><span class="dot dot-yellow"></span>Official</span>
+              <span><span class="dot dot-blue"></span>Seminar</span>
+              <span><span class="dot dot-green"></span>Meetup</span>
+            </div>
+          </div>
+          <div class="calendar">
+            <div class="cal-dow">S</div><div class="cal-dow">M</div><div class="cal-dow">T</div><div class="cal-dow">W</div><div class="cal-dow">T</div><div class="cal-dow">F</div><div class="cal-dow">S</div>
+            <div class="cal-day muted">1</div><div class="cal-day">2</div><div class="cal-day">3</div><div class="cal-day">4</div>
+            <div class="cal-day">5<span class="cal-dot" style="background:var(--dot-yellow)"></span></div>
+            <div class="cal-day">6</div><div class="cal-day">7</div>
+            <div class="cal-day">8</div><div class="cal-day">9</div>
+            <div style="display: flex; align-items: center; justify-content: center;"><div class="cal-day selected">10</div></div>
+            <div class="cal-day">11<span class="cal-dot" style="background:var(--dot-blue)"></span></div>
+            <div class="cal-day">12</div><div class="cal-day">13<span class="cal-dot" style="background:var(--dot-green)"></span></div><div class="cal-day">14</div>
+            <div class="cal-day">15<span class="cal-dot" style="background:var(--dot-green)"></span></div>
+            <div class="cal-day">16</div><div class="cal-day">17</div><div class="cal-day">18</div><div class="cal-day">19</div><div class="cal-day">20</div><div class="cal-day">21</div>
+            <div class="cal-day">22</div><div class="cal-day">23</div><div class="cal-day">24</div><div class="cal-day">25</div><div class="cal-day">26</div><div class="cal-day">27</div><div class="cal-day">28</div>
+            <div class="cal-day">29</div><div class="cal-day">30</div><div class="cal-day">31</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ───────── Navigation ───────── -->
+    <section id="nav">
+      <div class="section-eyebrow">10 · Components</div>
+      <h2 class="section-title">내비게이션</h2>
+      <p class="section-desc">상단/탭/하단 3종. 화면 최상위 전환 버튼은 파트너 라운지의 홍보관/리뷰관 텍스트 탭 패턴으로 통일한다.</p>
+
+      <div class="subsection">
+        <h3 class="subsection-title">Top App Bar</h3>
+        <div class="preview">
+          <div class="preview-label">Mobile · 모바일 헤더</div>
+          <div>
+            <div class="topapp-bar">
+              <span class="material-symbols-outlined topapp-icon">menu</span>
+              <span class="topapp-brand">BLENDING</span>
+              <span class="material-symbols-outlined topapp-icon">search</span>
+            </div>
+            <div class="subnav">
+              <span class="subnav-item active">CALENDAR</span>
+              <span class="subnav-item">RECIPE</span>
+              <span class="subnav-item">Q&amp;A</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="subsection">
+        <h3 class="subsection-title">Text Tabs</h3>
+        <p class="subsection-desc">Partner Lounge, Community, MyPage처럼 화면 최상위에서 콘텐츠 묶음을 바꾸는 탭. 배경 pill이나 인디케이터 없이 18px 텍스트 색/무게만으로 상태를 구분한다.</p>
+        <div class="preview">
+          <div class="preview-label">Top-level · 파트너 라운지 패턴</div>
+          <div class="text-tabs">
+            <span class="text-tab active">홍보관</span>
+            <span class="text-tab">리뷰관</span>
+            <span class="text-tab">게시글 <span class="text-tab-count">12</span></span>
+            <span class="text-tab">댓글 <span class="text-tab-count">24</span></span>
+          </div>
+          <div class="text-tabs" style="border-top:1px solid var(--border);">
+            <span class="text-tab active">CALENDAR</span>
+            <span class="text-tab">RECIPE</span>
+            <span class="text-tab">Q&amp;A</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="subsection">
+        <h3 class="subsection-title">Bottom Nav</h3>
+        <div class="preview" style="max-width: 380px;">
+          <div class="preview-label">Mobile · 하단 탭</div>
+          <div class="bottomnav">
+            <span class="bottomnav-item"><span class="material-symbols-outlined">map</span></span>
+            <span class="bottomnav-item active"><span class="material-symbols-outlined filled">groups</span></span>
+            <span class="bottomnav-item"><span class="material-symbols-outlined">home</span></span>
+            <span class="bottomnav-item"><span class="material-symbols-outlined">local_cafe</span></span>
+            <span class="bottomnav-item"><span class="material-symbols-outlined">person</span></span>
+          </div>
+        </div>
+      </div>
+
+      <div class="subsection">
+        <h3 class="subsection-title">완성 화면 예시 · Mobile</h3>
+        <div class="phone">
+          <div class="topapp-bar">
+            <span class="material-symbols-outlined topapp-icon">arrow_back</span>
+            <span class="topapp-brand">BLENDING</span>
+            <span class="material-symbols-outlined topapp-icon">search</span>
+          </div>
+          <div class="subnav">
+            <span class="subnav-item active">CALENDAR</span>
+            <span class="subnav-item">RECIPE</span>
+            <span class="subnav-item">Q&amp;A</span>
+          </div>
+          <div class="phone-body">
+            <h3 style="margin: 0 0 6px; font-size: 22px; font-weight: 700; letter-spacing: -0.015em;">일정 요청하기</h3>
+            <p style="margin: 0 0 24px; font-size: 12px; color: var(--fg-muted); line-height: 1.6;">새로운 공식 일정, 세미나, 비공식 일정에 대한 정보를 운영팀에 제출해 주세요.</p>
+            <div class="field">
+              <input type="text" id="phone-title" placeholder=" " />
+              <label for="phone-title">이벤트 제목</label>
+            </div>
+            <button class="btn btn-primary btn-primary-block">요청 보내기</button>
+          </div>
+          <div class="bottomnav">
+            <span class="bottomnav-item"><span class="material-symbols-outlined">map</span></span>
+            <span class="bottomnav-item active"><span class="material-symbols-outlined filled">groups</span></span>
+            <span class="bottomnav-item"><span class="material-symbols-outlined">home</span></span>
+            <span class="bottomnav-item"><span class="material-symbols-outlined">local_cafe</span></span>
+            <span class="bottomnav-item"><span class="material-symbols-outlined">person</span></span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ───────── Modal & Toast ───────── -->
+    <section id="feedback">
+      <div class="section-eyebrow">11 · Components</div>
+      <h2 class="section-title">모달 &amp; 토스트</h2>
+      <p class="section-desc">시트는 12px 반경, 그림자 modal. 토스트는 검정 배경 + 흰 텍스트 + accent 액션.</p>
+
+      <div class="demo-grid" style="grid-template-columns: 1fr 1fr;">
+        <div>
+          <h3 class="subsection-title">Modal Sheet</h3>
+          <div class="modal-demo">
+            <div class="modal-sheet">
+              <h4>일정을 삭제할까요?</h4>
+              <p>삭제한 일정은 복구할 수 없습니다. 신중하게 선택해 주세요.</p>
+              <div class="modal-actions">
+                <button class="btn btn-secondary">취소</button>
+                <button class="btn btn-destructive">삭제</button>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div>
+          <h3 class="subsection-title">Toast</h3>
+          <div style="display: flex; flex-direction: column; gap: 16px; padding: 24px; background: var(--surface-alt); border-radius: var(--radius-lg); border: 1px solid var(--border);">
+            <div class="toast"><span class="material-symbols-outlined" style="font-size: 18px;">check_circle</span> 요청이 전송되었습니다. <span class="toast-action">확인</span></div>
+            <div class="toast"><span class="material-symbols-outlined" style="font-size: 18px;">error</span> 이미지 크기는 5MB 이하만 가능합니다.</div>
+            <div class="toast"><span class="material-symbols-outlined" style="font-size: 18px;">info</span> 새 메시지가 도착했습니다. <span class="toast-action">보기</span></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ───────── Do & Don't ───────── -->
+    <section id="rules">
+      <div class="section-eyebrow">12 · Guide</div>
+      <h2 class="section-title">Do &amp; Don't</h2>
+      <p class="section-desc">기능 명세서를 받았을 때 가장 먼저 확인할 체크리스트입니다.</p>
+
+      <div class="rules">
+        <div class="rule do">
+          <h4>Do</h4>
+          <ul>
+            <li>흰 배경 + 검정 + 빨강 1회 — 이 비율 절대 유지</li>
+            <li>영문 ALL CAPS에 tracking 0.16em</li>
+            <li>로고는 Galmuri11, 그 외 모두 서울남산체</li>
+            <li>카테고리 표시는 하이라이터 4색 매핑 고정 — <strong>커뮤니티 탭에서만</strong></li>
+            <li>커뮤니티 외 탭(Recipe / Q&amp;A 등)의 리스트 타이틀은 평문(fg-strong)</li>
+            <li>카드는 flat — 그림자 대신 1px 보더</li>
+            <li>Primary CTA는 페이지당 1개, 풀폭 빨강</li>
+            <li>Floating label 입력 패턴 — 모든 폼 동일</li>
+            <li>모바일 히트 영역 44×44 이상</li>
+          </ul>
+        </div>
+        <div class="rule dont">
+          <h4>Don't</h4>
+          <ul>
+            <li>빨강 한 화면에 3회 이상 사용</li>
+            <li>본문/숫자에 Galmuri11 사용</li>
+            <li>카드에 그림자(elevation) 추가</li>
+            <li>둥근 모서리 12px 초과 (FAB/캘린더일 제외)</li>
+            <li>한 화면 폰트 사이즈 4단계 초과</li>
+            <li>영문 ALL CAPS에 tracking 미적용</li>
+            <li>그라데이션 배경</li>
+            <li>이모지를 의미 전달 수단으로 사용 (아이콘 사용)</li>
+            <li>커뮤니티 탭 밖에서 노랑/파랑/그린 하이라이터 사용 — 의미가 무너짐</li>
+            <li>카테고리 분류가 없는 리스트 타이틀에 하이라이터 장식 적용</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <footer>
+      <div class="brand">BLENDING</div>
+      <p>디자인 시스템 v1.0 · 2026</p>
+      <p style="margin-top: 8px;">앞으로 기능 명세서를 받으면 이 문서(DESIGN.md)와 이 페이지를 참조해 일관된 디자인을 생산합니다.</p>
+    </footer>
+  </main>
+</div>
+
+<script>
+  // Sidebar active-section highlight
+  (function () {
+    const links = document.querySelectorAll('.sidebar-nav a');
+    const map = new Map();
+    links.forEach(a => {
+      const id = a.getAttribute('href').slice(1);
+      const el = document.getElementById(id);
+      if (el) map.set(el, a);
+    });
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(e => {
+        if (e.isIntersecting) {
+          links.forEach(a => a.classList.remove('active'));
+          const link = map.get(e.target);
+          if (link) link.classList.add('active');
+        }
+      });
+    }, { rootMargin: '-30% 0px -60% 0px', threshold: 0 });
+    map.forEach((_, el) => observer.observe(el));
+  })();
+
+  // Live char counter
+  document.querySelectorAll('textarea[maxlength]').forEach(ta => {
+    const counter = ta.parentElement.querySelector('.field-counter');
+    if (!counter) return;
+    const max = ta.getAttribute('maxlength');
+    ta.addEventListener('input', () => {
+      counter.textContent = ta.value.length + '/' + max;
+    });
+  });
+</script>
+
+</body>
+</html>

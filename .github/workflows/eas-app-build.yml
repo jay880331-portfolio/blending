@@ -1,0 +1,103 @@
+name: EAS App Build
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - "app/**"
+      - "packages/bridge/**"
+      - "package.json"
+      - "pnpm-lock.yaml"
+      - "pnpm-workspace.yaml"
+      - "scripts/**"
+      - "web/scripts/**"
+      - "web/package.json"
+      - "app/eas-build.enabled"
+      - ".github/workflows/eas-app-build.yml"
+  workflow_dispatch:
+    inputs:
+      platform:
+        description: Platform to build
+        required: true
+        default: all
+        type: choice
+        options:
+          - all
+          - android
+          - ios
+
+jobs:
+  check-toggle:
+    name: Check EAS Build Toggle
+    runs-on: ubuntu-latest
+    outputs:
+      enabled: ${{ steps.toggle.outputs.enabled }}
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Read toggle
+        id: toggle
+        run: |
+          enabled="$(tr -d '[:space:]' < app/eas-build.enabled)"
+          echo "enabled=$enabled" >> "$GITHUB_OUTPUT"
+          echo "EAS build enabled: $enabled"
+
+  build:
+    name: Build ${{ matrix.platform }}
+    needs: check-toggle
+    if: ${{ needs.check-toggle.outputs.enabled == 'true' }}
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        platform:
+          - android
+          - ios
+
+    steps:
+      - name: Checkout
+        if: ${{ github.event_name == 'push' || github.event.inputs.platform == 'all' || github.event.inputs.platform == matrix.platform }}
+        uses: actions/checkout@v4
+
+      - name: Setup pnpm
+        if: ${{ github.event_name == 'push' || github.event.inputs.platform == 'all' || github.event.inputs.platform == matrix.platform }}
+        uses: pnpm/action-setup@v4
+        with:
+          version: 9.15.9
+
+      - name: Setup Node
+        if: ${{ github.event_name == 'push' || github.event.inputs.platform == 'all' || github.event.inputs.platform == matrix.platform }}
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: pnpm
+
+      - name: Install dependencies
+        if: ${{ github.event_name == 'push' || github.event.inputs.platform == 'all' || github.event.inputs.platform == matrix.platform }}
+        run: pnpm install --frozen-lockfile
+
+      - name: Lint
+        if: ${{ github.event_name == 'push' || github.event.inputs.platform == 'all' || github.event.inputs.platform == matrix.platform }}
+        run: pnpm lint
+
+      - name: Typecheck
+        if: ${{ github.event_name == 'push' || github.event.inputs.platform == 'all' || github.event.inputs.platform == matrix.platform }}
+        run: pnpm typecheck
+
+      - name: Build ${{ matrix.platform }} with EAS
+        if: ${{ github.event_name == 'push' || github.event.inputs.platform == 'all' || github.event.inputs.platform == matrix.platform }}
+        working-directory: app
+        run: pnpm dlx eas-cli@latest build --platform "${{ matrix.platform }}" --profile production --non-interactive
+        env:
+          EXPO_TOKEN: ${{ secrets.EXPO_TOKEN }}
+
+      - name: Sync latest build number to MongoDB
+        if: ${{ github.event_name == 'push' || github.event.inputs.platform == 'all' || github.event.inputs.platform == matrix.platform }}
+        run: ./scripts/sync-mobile-version-policy-from-eas.sh "${{ matrix.platform }}" production
+        env:
+          EXPO_TOKEN: ${{ secrets.EXPO_TOKEN }}
+          MONGODB_URI: ${{ secrets.MONGODB_URI }}
+          MONGODB_DB: ${{ secrets.MONGODB_DB }}

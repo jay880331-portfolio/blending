@@ -1,0 +1,51 @@
+name: Admin CI
+
+on:
+  pull_request:
+    paths:
+      - "admin/**"
+      - "packages/admin-contracts/**"
+      - "web/**"
+      - "docs/**"
+      - "scripts/**"
+      - "scripts/admin-ci-config.test.ts"
+      - "package.json"
+      - "pnpm-workspace.yaml"
+      - "pnpm-lock.yaml"
+      - ".github/workflows/admin-ci.yml"
+      - ".github/workflows/admin-smoke.yml"
+  push:
+    branches: [main]
+    paths:
+      - "admin/**"
+      - "packages/admin-contracts/**"
+      - "web/**"
+      - "docs/**"
+      - "scripts/**"
+      - "scripts/admin-ci-config.test.ts"
+      - "package.json"
+      - "pnpm-workspace.yaml"
+      - "pnpm-lock.yaml"
+      - ".github/workflows/admin-ci.yml"
+      - ".github/workflows/admin-smoke.yml"
+
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v4
+        with:
+          version: 9.15.9
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: pnpm
+      - run: pnpm install --frozen-lockfile
+      - run: pnpm format:check
+      - run: pnpm --filter @blending/web check:architecture
+      - run: pnpm lint
+      - run: pnpm typecheck
+      - run: pnpm test
+      - run: pnpm --filter @blending/web build
+      - run: pnpm --filter @blending/admin build

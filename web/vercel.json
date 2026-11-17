@@ -1,0 +1,12 @@
+{
+  "crons": [
+    {
+      "path": "/api/internal/search/reconcile",
+      "schedule": "0 18 * * *"
+    },
+    {
+      "path": "/api/internal/account-deletions/process",
+      "schedule": "0 0 * * *"
+    }
+  ]
+}

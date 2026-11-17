@@ -1,0 +1,177 @@
+.page,
+.formPage {
+  display: grid;
+  gap: 24px;
+  min-width: 0;
+}
+
+.formPage {
+  max-width: 880px;
+}
+
+.page :global(.page-header),
+.formPage :global(.page-header) {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 24px;
+}
+
+.page :global(.page-header h1),
+.formPage :global(.page-header h1) {
+  margin: 4px 0 0;
+  font-size: 24px;
+  line-height: 1.25;
+}
+
+.page :global(.page-header p) {
+  margin: 8px 0 0;
+  color: var(--fg-muted);
+}
+
+.page :global(.page-header a:not(.primary-action)),
+.formPage :global(.page-header a:not(.primary-action)),
+.page :global(table) button,
+.page :global(table) a {
+  border: 1px solid var(--border-strong);
+  border-radius: var(--radius-md);
+  background: var(--surface);
+  color: var(--fg);
+  padding: 8px 12px;
+}
+
+.page :global(table) {
+  width: 100%;
+  border-collapse: collapse;
+  background: var(--surface);
+}
+
+.page :global(caption) {
+  overflow: hidden;
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  clip: rect(0 0 0 0);
+}
+
+.page :global(th),
+.page :global(td) {
+  border-bottom: 1px solid var(--border);
+  padding: 14px 12px;
+  text-align: left;
+  vertical-align: top;
+}
+
+.page :global(th) {
+  color: var(--fg-muted);
+  font-size: 13px;
+  font-weight: 700;
+}
+
+.preview {
+  inline-size: 72px;
+  block-size: 96px;
+  object-fit: cover;
+}
+
+.form {
+  display: grid;
+  gap: 24px;
+}
+
+.rowActions {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+  gap: 8px;
+}
+
+.form fieldset {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  align-items: start;
+  gap: 20px;
+  margin: 0;
+  border: 1px solid var(--border);
+  padding: 20px;
+}
+
+.form legend {
+  padding: 0 8px;
+  font-size: 18px;
+  font-weight: 700;
+}
+
+.form :global(label) {
+  display: grid;
+  gap: 8px;
+  color: var(--fg-muted);
+  font-size: 13px;
+  font-weight: 700;
+}
+
+.form :global(input:not([type="checkbox"]):not([type="file"])) {
+  border: 1px solid var(--border-strong);
+  border-radius: var(--radius-md);
+  background: var(--surface);
+  color: var(--fg);
+  padding: 10px 12px;
+}
+
+.upload,
+.placements {
+  display: grid;
+  gap: 12px;
+  grid-column: 1 / -1;
+}
+
+.placements {
+  grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+}
+
+.form input[type="number"] {
+  max-width: 8rem;
+}
+
+.formPreview {
+  inline-size: 144px;
+  block-size: 192px;
+  object-fit: cover;
+}
+
+.checkbox {
+  display: flex !important;
+  align-items: center;
+  gap: 8px !important;
+  min-block-size: 44px;
+  padding: 8px 12px;
+}
+
+.checkbox input {
+  inline-size: 18px;
+  block-size: 18px;
+  min-block-size: 18px;
+  padding: 0 !important;
+}
+
+.primaryButton {
+  min-block-size: 56px;
+  border: 0;
+  border-radius: var(--radius-lg);
+  background: var(--accent);
+  color: var(--surface);
+  cursor: pointer;
+  font-weight: 700;
+  padding: 12px 20px;
+}
+
+.primaryButton:disabled {
+  cursor: not-allowed;
+  opacity: 0.4;
+}
+
+@media (max-width: 900px) {
+  .form fieldset {
+    grid-template-columns: 1fr;
+  }
+}
